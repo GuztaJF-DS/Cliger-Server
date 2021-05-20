@@ -1,0 +1,8 @@
+# my node Modules folder
+node_modules/
+
+# my enviroment variables
+.env
+
+# my error log ;)
+.log
