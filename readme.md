@@ -73,7 +73,7 @@ $ node index.js
 
 - [X] Create the basic DB Structure
 - [X] Create a basic Register Structure
-- [ ] Plan the MER
+- [X] Plan the MER
 - [ ] Apply the MER
 - [ ] Create the Login With token Auth
 - [ ] Create the Forgot-Password
