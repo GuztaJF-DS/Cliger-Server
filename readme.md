@@ -1,27 +1,27 @@
 <h1 align="center"><h1 align="center"><img src="src/assets/Cliger_Logo.png" height="400"></h1></h1>
 <h2 align="center">📉 Welcome to the Client Manager 📈</h2>
+<h3 align="center"><img src="https://img.shields.io/github/issues/GuztaJF-DS/Cliger-Server"/> <img src="https://img.shields.io/github/stars/GuztaJF-DS/Cliger-Server"/> <img src="https://img.shields.io/github/license/GuztaJF-DS/Cliger-Server"/>  <img src="https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FIGotaMellowship"/></h3>
 
 
-
-# 📋 Summary
+# Summary 📋
 
 <!--ts-->
-   * [About](#About)
-   * [Technologies](#Technologies)
-   * [Setup](#Setup)
-    * [Requirements](#requirements)
-    * [Intalling and configuring](#Intalling-and-configuring)
-   * [To Do](#To-Do)
-   * [License](#License)
+   * [About](#about)
+   * [Technologies](#technologies)
+   * [Setup](#setup)
+      * [Requirements](#requirements)
+      * [Intalling and configuring](#intalling-and-configuring)
+   * [To Do](#to-do)
+   * [License](#license)
 <!--te-->
 
-# 👀 About
+# About 👀
 
 The Cliger is a management application for micro, small and medium companies, the idea behind the Cliger would be to help these entrepreneurs to plan better since in Brazil most companies close in less than a year because of stupid decisions and a really bad administration.<br>
 but how will the cliger help me, you ask me, well we will expose numbers, data, graphs, predictions among other things that most of these small entrepreneurs  don't even know about the existence<br>
 Lastly, it is necessary to say that this is only the first part of the project, the server, after that first step we will work on the Mobile version and then if time helps with a little thing for the desktop
 
-# 🚀 Technologies
+# Technologies 🚀
 
 - [Node.js ](https://nodejs.org/en/)
 - [MySql](https://www.mysql.com/)
@@ -32,7 +32,7 @@ Lastly, it is necessary to say that this is only the first part of the project, 
 - [Body-parser](https://github.com/expressjs/body-parser)
 - [Dotenv-safe](https://github.com/rolodato/dotenv-safe)
 
-# 💻 Setup
+# Setup 💻
 ### Requirements
 
 - [Node.js](https://nodejs.org/en/)
@@ -46,7 +46,7 @@ Lastly, it is necessary to say that this is only the first part of the project, 
 *Clone the project and access the folder*
 
 ```bash
-$ git clone https://github.com/ && cd Server
+$ git clone https://github.com/GuztaJF-DS/Cliger-Server/ && cd Server
 ```
 *Then Follow these steps*
 
@@ -69,7 +69,7 @@ $ node index.js
 # Well done, project is started!
 ```
 
-# 📝 To Do
+# To Do 📝
 
 - [X] Create the basic DB Structure
 - [X] Create a basic Register Structure
@@ -81,6 +81,6 @@ $ node index.js
 - [ ] Create the Delete User
 - [ ] Think what else i will add to this list
 
-# 🎓 License
+# License 🎓
 
 This project is licensed under the GPL 3.0 License - see the [LICENSE](LICENSE) file for details.
