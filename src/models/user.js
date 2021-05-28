@@ -5,12 +5,12 @@ const User = Database.define("users", {
 	  nm_user:{
         type: Sequelize.STRING,
         allowNull:false,
-				unique:'compositeIndex'
+		unique:'compositeIndex'
     },
 	  email_user: {
         type: Sequelize.STRING,
         allowNull:false,
-				unique:'compositeIndex'
+		unique:'compositeIndex'
     },
 	  password_user: {
         type: Sequelize.STRING,
