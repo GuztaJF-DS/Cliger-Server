@@ -76,9 +76,9 @@ $ node index.js
 - [X] Plan the MER
 - [ ] Apply the MER
 - [X] Create the Login With token Auth
-- [ ] Create the Forgot-Password
-- [ ] Create the Change Password
-- [ ] Create the Delete User
+- [X] Create the Forgot-Password
+- [X] Create the Change Password
+- [X] Create the Delete User
 - [ ] Think what else i will add to this list
 
 # License 🎓
