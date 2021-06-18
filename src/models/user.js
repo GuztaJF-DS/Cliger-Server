@@ -4,13 +4,11 @@ const Database=require("../config/database");
 const User = Database.define("users", {
 	  nm_user:{
         type: Sequelize.STRING,
-        allowNull:false,
-		unique:'compositeIndex'
+        allowNull:false
     },
 	  email_user: {
         type: Sequelize.STRING,
-        allowNull:false,
-		unique:'compositeIndex'
+        allowNull:false
     },
 	  password_user: {
         type: Sequelize.STRING,

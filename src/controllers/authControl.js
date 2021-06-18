@@ -5,6 +5,7 @@ const bodyParser=require('body-parser');
 const bcrypt=require("bcryptjs");
 const jwt=require('jsonwebtoken');
 const nodemailer=require('nodemailer');
+const cors = require('cors');
 
 require("dotenv-safe").config();
 
@@ -19,18 +20,28 @@ function Generate_Token (params={}){
 		});
 }
 
+router.use(cors())
+
 router.post('/register',async(req,res,next)=>{
 	try{
-		 bcrypt.hash(req.body.password_user, 10, async(err, hash)=> {
-			const result=await User.create({
-				nm_user:req.body.nm_user,
-				email_user:req.body.email_user,
-				password_user:hash,
+		console.log(req.body.email_user)
+		const result=await User.findOne({where:{
+			email_user:req.body.email_user
+		}})
+		if(result==null){
+				bcrypt.hash(req.body.password_user, 10, async(err, hash)=> {
+				const resultX=await User.create({
+					nm_user:req.body.nm_user,
+					email_user:req.body.email_user,
+					password_user:hash,
+				})
+				if(resultX){
+					res.status(200).send({mensage:"Success on register"})
+				}
 			})
-			if(result){
-				res.status(200).send({mensage:"Success on register"})
-			}
-		})
+		}else{
+			res.json({Error:"Email or UserName Already Exists"})
+		}
 	}catch(err){
 		res.status(400).send({error:"Registration Failed"});
 	}
@@ -48,16 +59,16 @@ router.post('/authenticate',async(req,res)=>{
 					res.status(200).send({mensage:"Success on auth"})
 				}
 				else{
-					res.status(400).send({mensage:"Wrong Password"})
+					res.status(200).send({Error:"Wrong Password"})
 				}
 			})
 			
 		}else{
-			res.status(400).send({error:"Wrong E-Mail"});
+			res.status(200).send({Error:"Wrong E-Mail"});
 		}
 	}catch(err){
 		console.log(err);
-		res.status(400).send({error:"auth Failed"});
+		res.status(400).send({Error:"auth Failed"});
 	}
 });
 
@@ -77,19 +88,17 @@ router.post('/delete/User',async(req,res)=>{
 					}
 				}
 				else{
-					res.status(400).send({mensage:"Wrong Password"})
+					res.status(200).send({Error:"Wrong Password"})
 				}
 			})
 		}
 	}catch(err){
-		console.log(err);
-		res.status(400).send({error:"deletation Failed"})
+		res.status(400).send({Error:"deletation Failed"})
 	}
 })
 
 router.post('/forgotPass',async(req,res)=>{
 	try{
-
 		const token=Generate_Token();
 		
 		const mensage = {
@@ -101,15 +110,14 @@ router.post('/forgotPass',async(req,res)=>{
 	    transporter.sendMail(mensage, (err, info) => {
 	        if (err) {
 	            console.log('Error occurred. ' + err.mensage);
-	            res.status(400).send({error:"Email not sended"})
+	            res.status(200).send({Error:"Email not sended"})
 	        }else{
-	        	res.status(200).send({mensage:"Email sended", Token:`${token}`})
+	        	res.status(200).send({Mensage:"Email sended", Token:`${token}`})
 		        console.log('Message sent: %s', info.mensageId);
 	        }
 	    });
 	}catch(err){
-		console.log(err);
-		res.status(400).send({error:"Failed"})
+		res.status(400).send({Error:"Failed"})
 	}
 })
 
@@ -118,15 +126,12 @@ router.get('/ResetPass',authPass,async(req,res)=>{
 	try{
 		res.send({"user":req.userId});		
 	}catch(err){
-		console.log(err);
-		console.log(req.body.password_user);
-		res.status(400).send({error:"Failed"});
+		res.status(400).send({Error:"Failed"});
 	}
 })
 
-router.post('/ConfirmPass',async(req,res)=>{
+router.put('/ConfirmPass',async(req,res)=>{
 	try{
-		console.log(req.body.password_user);
 		bcrypt.hash(req.body.password_user, 10, async(err, hash)=> {
 
 			const result=await User.update(
@@ -138,9 +143,7 @@ router.post('/ConfirmPass',async(req,res)=>{
 			}
 		})		
 	}catch(err){
-		console.log(err);
-		console.log(req.body.password_user);
-		res.status(400).send({error:"Failed"});
+		res.status(400).send({Error:"Failed"});
 	}
 })
 
