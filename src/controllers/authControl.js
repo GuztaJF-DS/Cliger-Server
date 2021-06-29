@@ -1,5 +1,4 @@
 const express=require('express');
-const { Sequelize } = require("sequelize");
 const router=express.Router();
 const bodyParser=require('body-parser');
 const bcrypt=require("bcryptjs");
@@ -10,38 +9,35 @@ const cors = require('cors');
 require("dotenv-safe").config();
 
 const User=require('../models/user');
-const Database=require('../config/database');
 const transporter=require('../modules/mail');
-const authPass=require('../middleware/auth')
+const authPass=require('../middleware/auth');
+const emailFilter=require('../middleware/filter');
 
 function Generate_Token (params={}){
 	return token=jwt.sign(params, process.env.SECRET,{
-			expiresIn:(5*60),
-		});
+		expiresIn:(5*60),
+	});
 }
 
 router.use(cors())
 
-router.post('/register',async(req,res,next)=>{
+router.post('/register',emailFilter,async(req,res,next)=>{
 	try{
-		console.log(req.body.email_user)
-		const result=await User.findOne({where:{
-			email_user:req.body.email_user
-		}})
-		if(result==null){
-				bcrypt.hash(req.body.password_user, 10, async(err, hash)=> {
-				const resultX=await User.create({
-					nm_user:req.body.nm_user,
-					email_user:req.body.email_user,
-					password_user:hash,
-				})
-				if(resultX){
-					res.status(200).send({mensage:"Success on register"})
-				}
-			})
-		}else{
-			res.json({Error:"Email or UserName Already Exists"})
+		bcrypt.hash(req.body.Password, 10, async(err, hash)=> {
+		const result=await User.create({
+			UserName:req.body.UserName,
+			Email:req.body.Email,
+			Password:hash,
+			BirthDate:req.body.BirthDate,
+			Cpf:req.body.Cpf,
+			PhoneNumber:req.body.PhoneNumber,
+			ResetToken:null,
+			ResetTokenExpDate:null
+		})
+		if(result){
+			res.json({mensage:"Success on register"})
 		}
+	})
 	}catch(err){
 		res.status(400).send({error:"Registration Failed"});
 	}
@@ -51,23 +47,22 @@ router.post('/register',async(req,res,next)=>{
 router.post('/authenticate',async(req,res)=>{
 	try{
 		const result=await User.findOne({where:{
-			email_user:req.body.email_user
+			Email:req.body.Email
 		}})
 		if(result){
-			bcrypt.compare(req.body.password_user,result.password_user, async(err,resp)=>{
+			bcrypt.compare(req.body.Password,result.Password, async(err,resp)=>{
 				if(resp){
-					res.status(200).send({mensage:"Success on auth"})
+					res.json({mensage:"Success on auth"})
 				}
 				else{
-					res.status(200).send({Error:"Wrong Password"})
+					res.json({Error:"Wrong Password"})
 				}
 			})
 			
 		}else{
-			res.status(200).send({Error:"Wrong E-Mail"});
+			res.json({Error:"Wrong E-Mail"});
 		}
 	}catch(err){
-		console.log(err);
 		res.status(400).send({Error:"auth Failed"});
 	}
 });
@@ -75,22 +70,24 @@ router.post('/authenticate',async(req,res)=>{
 router.post('/delete/User',async(req,res)=>{
 	try{
 		const result=await User.findOne({where:{
-			email_user:req.body.email_user
+			Email:req.body.Email
 		}})
 		if(result){
-			bcrypt.compare(req.body.password_user,result.password_user, async(err,resp)=>{
+			bcrypt.compare(req.body.Password,result.Password, async(err,resp)=>{
 				if(resp){
 					const resul=await User.destroy({where:{
-						email_user:req.body.email_user
+						Email:req.body.Email
 					}})
 					if(resul){
-						res.status(200).send({mensage:"User Deleted"})
+						res.json({mensage:"User Deleted"})
 					}
 				}
 				else{
-					res.status(200).send({Error:"Wrong Password"})
+					res.json({Error:"Wrong Password"})
 				}
 			})
+		}else{
+			res.json({Error:"Wrong Email"});
 		}
 	}catch(err){
 		res.status(400).send({Error:"deletation Failed"})
@@ -103,17 +100,17 @@ router.post('/forgotPass',async(req,res)=>{
 		
 		const mensage = {
 			from: '<cligeroficial@gmail.com>',
-			to: '<'+req.body.email_user+'>',
+			to: `<${req.body.Email}>`,
 			subject: 'Recuperação de senha',
 			html: `<p>recupera tua conta ai bro atraves desse token ai ${token}</p>`
 		};
 	    transporter.sendMail(mensage, (err, info) => {
 	        if (err) {
-	            console.log('Error occurred. ' + err.mensage);
-	            res.status(200).send({Error:"Email not sended"})
+	            console.log(`Error occurred. ${err.mensage}`);
+	            res.json({Error:"Email not sended"})
 	        }else{
-	        	res.status(200).send({Mensage:"Email sended", Token:`${token}`})
-		        console.log('Message sent: %s', info.mensageId);
+	        	res.json({Mensage:"Email sended", Token:`${token}`})
+		        console.log(`Message sent:, ${info.mensageId}`);
 	        }
 	    });
 	}catch(err){
@@ -124,7 +121,7 @@ router.post('/forgotPass',async(req,res)=>{
 
 router.get('/ResetPass',authPass,async(req,res)=>{
 	try{
-		res.send({"user":req.userId});		
+		res.json({"user":req.userId});		
 	}catch(err){
 		res.status(400).send({Error:"Failed"});
 	}
@@ -132,14 +129,14 @@ router.get('/ResetPass',authPass,async(req,res)=>{
 
 router.put('/ConfirmPass',async(req,res)=>{
 	try{
-		bcrypt.hash(req.body.password_user, 10, async(err, hash)=> {
+		bcrypt.hash(req.body.Password, 10, async(err, hash)=> {
 
 			const result=await User.update(
-				{password_user:hash},
-				{where:{email_user:req.body.email_user}}
+				{Password:hash},
+				{where:{Email:req.body.Email}}
 			) 
 			if(result){
-				res.status(200).send({mensage:"Password Changed"})
+				res.json({mensage:"Password Changed"})
 			}
 		})		
 	}catch(err){
