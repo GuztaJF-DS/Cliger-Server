@@ -24,10 +24,25 @@ router.post('/register',AdjustTime,async(req,res)=>{
 			res.json({mensage:"Sucess on Create"})
 		}
 	}catch(err){
-		console.log(err);
 		res.status(400).send({Error:"Creation Failed"});
 	}
 	
+})
+
+router.get('/getOne',async(req,res)=>{
+	try{
+		const result=await Schedule.findOne({
+			where:{
+				ScheduledDay:req.body.ScheduledDay
+			}
+		});
+		if(result){
+			const Data=result.dataValues;
+			res.json(Data)
+		}
+	}catch(err){
+		res.status(400).send({Error:"Creation Failed"});
+	}
 })
 
 module.exports=app=>app.use('/schedule',router);
