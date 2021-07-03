@@ -2,6 +2,7 @@ const express=require('express');
 const router=express.Router();
 const bodyParser=require('body-parser');
 const cors = require('cors');
+const { Op } = require("sequelize");
 
 require("dotenv-safe").config();
 
@@ -33,15 +34,36 @@ router.get('/getOne',async(req,res)=>{
 	try{
 		const result=await Schedule.findOne({
 			where:{
-				ScheduledDay:req.body.ScheduledDay
+				[Op.and]: [{ScheduledDay:req.body.ScheduledDay },{ScheduledHour:req.body.ScheduledHour }, { userId:req.body.userId }]
 			}
 		});
 		if(result){
 			const Data=result.dataValues;
 			res.json(Data)
+		}else{
+			res.json({mensage:"Cannot Find any register at this time"})
 		}
 	}catch(err){
-		res.status(400).send({Error:"Creation Failed"});
+		res.status(400).send({Error:"Error"});
+	}
+})
+
+router.get('/getAllFromDay',async(req,res)=>{
+	try{	
+		const result=await Schedule.findAll({
+			where:{
+				[Op.and]: [{ScheduledDay:req.body.ScheduledDay},{userId:req.body.userId}]
+			},
+			raw:true
+		})
+		if(result){
+			const data=result.map(function(item,id){
+				return item;
+			})
+			res.json(data)
+		}
+	}catch{
+		res.status(400).send({Error:"Cannot Find"});
 	}
 })
 
