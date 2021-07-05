@@ -67,7 +67,7 @@ router.get('/getAllFromDay',async(req,res)=>{
 	}
 })
 
-router.get('/delete/One',async(req,res)=>{
+router.delete('/delete/One',async(req,res)=>{
 	try{
 		const del=await Schedule.destroy({
 			where:{
@@ -86,7 +86,7 @@ router.get('/delete/One',async(req,res)=>{
 	}
 })
 
-router.get('/delete/Day',async(req,res)=>{
+router.delete('/delete/Day',async(req,res)=>{
 	try{
 		const del=await Schedule.destroy({
 			where:{
