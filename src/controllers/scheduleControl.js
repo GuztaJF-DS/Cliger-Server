@@ -92,7 +92,7 @@ router.delete('/delete/Day',async(req,res)=>{
 			where:{
 				[Op.and]:[{ScheduledDay:req.body.ScheduledDay }, { userId:req.body.userId }]
 			}
-		})
+		});
 		if(del){
 			res.json({mensage:"Records Deleted Successfully"});
 		}
@@ -100,7 +100,36 @@ router.delete('/delete/Day',async(req,res)=>{
 			res.json({mensage:"Records not Deleted"});
 		}
 	}catch(err){
-		res.status(400).send({Error:"Error"})
+		res.status(400).send({Error:"Error"});
+	}
+})
+
+router.put('/update/Day',AdjustTime,async(req,res)=>{
+	try{
+		const result=await Schedule.findOne({
+			where:{
+				[Op.and]: [{id:req.body.id }, { userId:req.body.userId }]
+			}
+		});
+		if(result){
+			const Types='{"type":["SeviceProvided","Description","ScheduledDay","ScheduledHour","ClientName"]}';
+			const obj=JSON.parse(Types);
+
+			for(var x=0;x<obj.type.length;x++){
+				var string=obj.type[x];
+				if(req.body[string]!=""){
+					result[string]=req.body[string];
+					await result.save();
+					console.log("1");
+				}else{
+					console.log("0");
+				}
+			}
+			res.json({mensage:"Values Changed"});
+		}
+	}catch(err){
+		console.log(err);
+		res.status(400).send({Error:"Error"});
 	}
 })
 
