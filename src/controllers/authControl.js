@@ -75,10 +75,10 @@ router.post('/delete/User',async(req,res)=>{
 		if(result){
 			bcrypt.compare(req.body.Password,result.Password, async(err,resp)=>{
 				if(resp){
-					const resul=await User.destroy({where:{
+					const del=await User.destroy({where:{
 						Email:req.body.Email
 					}})
-					if(resul){
+					if(del){
 						res.json({mensage:"User Deleted"})
 					}
 				}
@@ -119,7 +119,7 @@ router.post('/forgotPass',async(req,res)=>{
 })
 
 
-router.get('/ResetPass',authPass,async(req,res)=>{
+router.get('/resetPass',authPass,async(req,res)=>{
 	try{
 		res.json({"user":req.userId});		
 	}catch(err){
@@ -127,7 +127,7 @@ router.get('/ResetPass',authPass,async(req,res)=>{
 	}
 })
 
-router.put('/ConfirmPass',async(req,res)=>{
+router.put('/confirmPass',async(req,res)=>{
 	try{
 		bcrypt.hash(req.body.Password, 10, async(err, hash)=> {
 

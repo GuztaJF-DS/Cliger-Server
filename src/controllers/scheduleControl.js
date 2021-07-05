@@ -63,7 +63,44 @@ router.get('/getAllFromDay',async(req,res)=>{
 			res.json(data)
 		}
 	}catch{
-		res.status(400).send({Error:"Cannot Find"});
+		res.status(400).send({Error:"Error"});
+	}
+})
+
+router.get('/delete/One',async(req,res)=>{
+	try{
+		const del=await Schedule.destroy({
+			where:{
+				[Op.and]:[{ScheduledDay:req.body.ScheduledDay },{ScheduledHour:req.body.ScheduledHour },,{userId:req.body.userId}]
+			}
+		})
+		if(del){
+			res.json({mensage:"Shedule deleted"})
+		}
+		else{
+			res.json({Error:"Schedule not deleted"})
+		}
+	}catch(err){
+		console.log(err)
+		res.status(400).send({Error:"Error"})
+	}
+})
+
+router.get('/delete/Day',async(req,res)=>{
+	try{
+		const del=await Schedule.destroy({
+			where:{
+				[Op.and]:[{ScheduledDay:req.body.ScheduledDay }, { userId:req.body.userId }]
+			}
+		})
+		if(del){
+			res.json({mensage:"Records Deleted Successfully"});
+		}
+		else{
+			res.json({mensage:"Records not Deleted"});
+		}
+	}catch(err){
+		res.status(400).send({Error:"Error"})
 	}
 })
 
