@@ -30,10 +30,6 @@ const User = Database.define("users", {
         type: Sequelize.STRING,
         allowNull:true
     },
-      ResetTokenExpDate: {
-        type: Sequelize.DATE,
-        allowNull:true
-    },
 	});
 
 module.exports=User;

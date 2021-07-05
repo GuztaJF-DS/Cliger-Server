@@ -3,14 +3,13 @@ const router=express.Router();
 const bodyParser=require('body-parser');
 const bcrypt=require("bcryptjs");
 const jwt=require('jsonwebtoken');
-const nodemailer=require('nodemailer');
 const cors = require('cors');
+const { Op } = require("sequelize");
 
 require("dotenv-safe").config();
 
 const User=require('../models/user');
 const transporter=require('../modules/mail');
-const authPass=require('../middleware/auth');
 const emailFilter=require('../middleware/filter');
 
 function Generate_Token (params={}){
@@ -31,11 +30,10 @@ router.post('/register',emailFilter,async(req,res,next)=>{
 			BirthDate:req.body.BirthDate,
 			Cpf:req.body.Cpf,
 			PhoneNumber:req.body.PhoneNumber,
-			ResetToken:null,
-			ResetTokenExpDate:null
+			ResetToken:null
 		})
 		if(result){
-			res.json({mensage:"Success on register"})
+			res.json({mensage:"Success on register"});
 		}
 	})
 	}catch(err){
@@ -52,10 +50,10 @@ router.post('/authenticate',async(req,res)=>{
 		if(result){
 			bcrypt.compare(req.body.Password,result.Password, async(err,resp)=>{
 				if(resp){
-					res.json({mensage:"Success on auth"})
+					res.json({mensage:`Success on auth ${result.ResetToken}`});
 				}
 				else{
-					res.json({Error:"Wrong Password"})
+					res.json({Error:"Wrong Password"});
 				}
 			})
 			
@@ -79,18 +77,18 @@ router.post('/delete/User',async(req,res)=>{
 						Email:req.body.Email
 					}})
 					if(del){
-						res.json({mensage:"User Deleted"})
+						res.json({mensage:"User Deleted"});
 					}
 				}
 				else{
-					res.json({Error:"Wrong Password"})
+					res.json({Error:"Wrong Password"});
 				}
 			})
 		}else{
 			res.json({Error:"Wrong Email"});
 		}
 	}catch(err){
-		res.status(400).send({Error:"deletation Failed"})
+		res.status(400).send({Error:"deletation Failed"});
 	}
 })
 
@@ -98,6 +96,17 @@ router.post('/forgotPass',async(req,res)=>{
 	try{
 		const token=Generate_Token();
 		
+		const mail=await User.findOne({where:{
+			Email:req.body.Email
+		}})
+		if(mail){
+			mail.ResetToken=token;
+			await mail.save();
+		}
+		else{
+			res.status(400).send({Error:"Email Not Exists"});
+		}
+
 		const mensage = {
 			from: '<cligeroficial@gmail.com>',
 			to: `<${req.body.Email}>`,
@@ -107,7 +116,7 @@ router.post('/forgotPass',async(req,res)=>{
 	    transporter.sendMail(mensage, (err, info) => {
 	        if (err) {
 	            console.log(`Error occurred. ${err.mensage}`);
-	            res.json({Error:"Email not sended"})
+	            res.json({Error:"Email not sended"});
 	        }else{
 	        	res.json({Mensage:"Email sended", Token:`${token}`})
 		        console.log(`Message sent:, ${info.mensageId}`);
@@ -119,27 +128,58 @@ router.post('/forgotPass',async(req,res)=>{
 })
 
 
-router.get('/resetPass',authPass,async(req,res)=>{
+router.get('/ConfirmToken',async(req,res)=>{
 	try{
-		res.json({"user":req.userId});		
+		const authHeader=req.headers.authorization;;
+
+		if(!authHeader){
+			return res.status(401).send({"error":"No Token provided"});
+		}
+
+		const parts=authHeader.split(' ');
+
+		if(!parts.length===2){
+			return res.status(401).send({"error":"Token Error"});
+		}
+		const [scheme,token]=parts;
+
+		if(!/^Bearer$/i.test(scheme)){
+			return res.status(401).send({"error":"Token MalFormatted"});
+		}
+
+		jwt.verify(token,process.env.SECRET,async(err,decoded)=>{
+			if(err){
+				return res.status(401).send({"error":"Token invalid"});
+			}
+			res.json({mensage:"Token confimed"});
+		});		
 	}catch(err){
 		res.status(400).send({Error:"Failed"});
 	}
 })
 
-router.put('/confirmPass',async(req,res)=>{
+router.put('/changePass',async(req,res)=>{
 	try{
-		bcrypt.hash(req.body.Password, 10, async(err, hash)=> {
-
-			const result=await User.update(
-				{Password:hash},
-				{where:{Email:req.body.Email}}
-			) 
-			if(result){
-				res.json({mensage:"Password Changed"})
-			}
-		})		
+		const result=await User.findOne({where:{
+			[Op.and]:[{Email:req.body.Email},{ResetToken:req.body.Token}]
+		}});
+		if(result){
+			bcrypt.hash(req.body.Password, 10, async(err, hash)=> {
+				const resp=await User.update(
+					{Password:hash},
+					{where:{Email:req.body.Email}}
+				) 
+				if(resp){
+					result.ResetToken="";
+					await result.save();
+					res.json({mensage:"Password Changed"})
+				}
+			})
+		}else{
+			res.status(400).send({Error:"Email or Token is Invalid"})
+		}	
 	}catch(err){
+		console.log(err);
 		res.status(400).send({Error:"Failed"});
 	}
 })
