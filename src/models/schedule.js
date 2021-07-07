@@ -25,7 +25,7 @@ const Schedule = Database.define("schedule", {
       }
 	});
 
-User.hasMany(Schedule);
+User.hasMany(Schedule,{onDelete:'CASCADE'});
 Schedule.belongsTo(User);
 
 module.exports=Schedule;

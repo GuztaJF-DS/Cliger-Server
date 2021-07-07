@@ -9,7 +9,7 @@ const FinanceData=Database.define("finances",{
     }
 });
 
-User.hasMany(FinanceData);
+User.hasMany(FinanceData,{onDelete:'CASCADE'});
 FinanceData.belongsTo(User);
 
 module.exports=FinanceData;

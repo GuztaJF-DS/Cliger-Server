@@ -16,10 +16,13 @@ router.post('/register',async(req,res)=>{
         })
         if(ResultFin){
             res.json({menssage:"New Record made"});
+        }else{
+            res.json({error:"Cannot make a new Record"});
         }
     }catch(err){
         res.status(400).send({error:"error"});
     }
 });
+
 
 module.exports=app=>app.use('/finance',router);

@@ -22,7 +22,7 @@ router.post('/register',AdjustTime,async(req,res)=>{
 			userId:req.body.userId
 		})
 		if(result){
-			res.json({mensage:"Sucess on Create"})
+			res.json({menssage:"Sucess on Create"})
 		}
 	}catch(err){
 		res.status(400).send({Error:"Creation Failed"});
@@ -41,7 +41,7 @@ router.get('/getOne',async(req,res)=>{
 			const Data=result.dataValues;
 			res.json(Data)
 		}else{
-			res.json({mensage:"Cannot Find any register at this time"})
+			res.json({menssage:"Cannot Find any register at this time"})
 		}
 	}catch(err){
 		res.status(400).send({Error:"Error"});
@@ -71,11 +71,11 @@ router.delete('/delete/One',async(req,res)=>{
 	try{
 		const del=await Schedule.destroy({
 			where:{
-				[Op.and]:[{ScheduledDay:req.body.ScheduledDay },{ScheduledHour:req.body.ScheduledHour },,{userId:req.body.userId}]
+				[Op.and]:[{ScheduledDay:req.body.ScheduledDay },{ScheduledHour:req.body.ScheduledHour },{userId:req.body.userId}]
 			}
 		})
 		if(del){
-			res.json({mensage:"Shedule deleted"})
+			res.json({menssage:"Shedule deleted"})
 		}
 		else{
 			res.json({Error:"Schedule not deleted"})
@@ -94,10 +94,10 @@ router.delete('/delete/Day',async(req,res)=>{
 			}
 		});
 		if(del){
-			res.json({mensage:"Records Deleted Successfully"});
+			res.json({menssage:"Records Deleted Successfully"});
 		}
 		else{
-			res.json({mensage:"Records not Deleted"});
+			res.json({menssage:"Records not Deleted"});
 		}
 	}catch(err){
 		res.status(400).send({Error:"Error"});
@@ -125,7 +125,7 @@ router.put('/update/Day',AdjustTime,async(req,res)=>{
 					console.log("0");
 				}
 			}
-			res.json({mensage:"Values Changed"});
+			res.json({menssage:"Values Changed"});
 		}
 	}catch(err){
 		console.log(err);
