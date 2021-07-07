@@ -24,21 +24,17 @@ module.exports=async(req,res,next)=>{
 		raw: true
 	})
 	if(result){
-		var data= result.map(function(id,indice){
+		var data= result.map(function(item,indice){
 			if(Time==""){
 				req.body.ScheduledHour=id.ScheduledHour;
 				Time=req.body.ScheduledHour;
 			}
-			return id.ScheduledHour;
+			let ScheduledHour=item.ScheduledHour,
+			ScheduledDay=item.ScheduledDay,
+			id=item.id
+			return {ScheduledHour,ScheduledDay,id};
 		});
 
-		var data2=result.map(function(id,indice){
-			return id.ScheduledDay;
-		});
-
-		var data3=result.map(function(id,indice){
-			return id.id;
-		});
 
 		var y=Time;
 		const [hour,min]=y.split(":");
@@ -47,11 +43,8 @@ module.exports=async(req,res,next)=>{
 		}
 		else{
 			for(var x=0;x<data.length;x++){
-				console.log("\n"+data3[x]);
-				if(data[x]==Time && data2[x]==Day){
-					console.log("\n"+data2[x]);
-					console.log("\n"+data[x]);
-					if(data3[x]==ID){
+				if(data[x].ScheduledHour==Time && data[x].ScheduledDay==Day){
+					if(data[x].id==ID){
 						return next();
 					}
 					return res.status(400).send({"error":"já existe cliente marcado nessa hora"});
