@@ -7,9 +7,6 @@ run();
 const db = new Sequelize(process.env.DBNAME, process.env.DBUSERNAME, process.env.DBPASSWORD, {
   host: process.env.DBHOST,
   port:process.env.DBPORT,
-  dialectOptions: {
-    useUTC: false 
- },
   dialect: 'mysql',
   timezone: '-03:00'
 });
