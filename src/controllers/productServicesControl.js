@@ -26,5 +26,30 @@ router.post('/New',async(req,res)=>{
     }
 });
 
+router.get('/GetAll',async(req,res)=>{
+    try{
+        const result=ProSer.findAll({
+            where:{
+                userId:req.body.userId
+            },raw:true
+        });
+        if(result){
+            const data=(await result).map(function(item,ID){
+                let id=item.id,
+                Code=item.Code,
+                Name=item.Name,
+                Description=item.Description,
+                Type=item.Type,
+                Value=item.TotalAmount,
+                userId=item.userId
+
+                return {id,Code,Name,Description,Type,Value,Value,userId}
+            })
+            res.json(data);
+        }
+    }catch(err){
+        res.status(400).send({error:'Error'});
+    }
+});
 
 module.exports=app=>app.use("/products", router);
