@@ -33,7 +33,7 @@ router.post('/register',emailFilter,async(req,res,next)=>{
 			ResetToken:null
 		})
 		if(result){
-			res.json({mensage:"Success on register"});
+			res.json({menssage:"Success on register"});
 		}
 	})
 	}catch(err){
@@ -50,7 +50,7 @@ router.post('/authenticate',async(req,res)=>{
 		if(result){
 			bcrypt.compare(req.body.Password,result.Password, async(err,resp)=>{
 				if(resp){
-					res.json({mensage:`Success on auth ${result.ResetToken}`});
+					res.json({menssage:"Success on auth"});
 				}
 				else{
 					res.json({Error:"Wrong Password"});
@@ -107,19 +107,19 @@ router.post('/forgotPass',async(req,res)=>{
 			res.status(400).send({Error:"Email Not Exists"});
 		}
 
-		const mensage = {
+		const menssage = {
 			from: '<cligeroficial@gmail.com>',
 			to: `<${req.body.Email}>`,
 			subject: 'Recuperação de senha',
 			html: `<p>recupera tua conta ai bro atraves desse token ai ${token}</p>`
 		};
-	    transporter.sendMail(mensage, (err, info) => {
+	    transporter.sendMail(menssage, (err, info) => {
 	        if (err) {
-	            console.log(`Error occurred. ${err.mensage}`);
+	            console.log(`Error occurred. ${err.menssage}`);
 	            res.json({Error:"Email not sended"});
 	        }else{
-	        	res.json({Mensage:"Email sended", Token:`${token}`})
-		        console.log(`Message sent:, ${info.mensageId}`);
+	        	res.json({menssage:"Email sended", Token:`${token}`})
+		        console.log(`Message sent:, ${info.menssageId}`);
 	        }
 	    });
 	}catch(err){
@@ -151,7 +151,7 @@ router.get('/ConfirmToken',async(req,res)=>{
 			if(err){
 				return res.status(401).send({"error":"Token invalid"});
 			}
-			res.json({mensage:"Token confimed"});
+			res.json({menssage:"Token confimed"});
 		});		
 	}catch(err){
 		res.status(400).send({Error:"Failed"});
@@ -172,7 +172,7 @@ router.put('/changePass',async(req,res)=>{
 				if(resp){
 					result.ResetToken="";
 					await result.save();
-					res.json({mensage:"Password Changed"})
+					res.json({menssage:"Password Changed"})
 				}
 			})
 		}else{
