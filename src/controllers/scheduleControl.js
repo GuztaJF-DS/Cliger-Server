@@ -4,8 +4,6 @@ const bodyParser=require('body-parser');
 const cors = require('cors');
 const { Op } = require("sequelize");
 
-require("dotenv-safe").config();
-
 const Schedule=require('../models/Schedule');
 const AdjustTime=require('../middleware/AdjustTime');
 
@@ -14,8 +12,6 @@ router.use(cors())
 router.post('/register',AdjustTime,async(req,res)=>{
 	try{
 		const result=await Schedule.create({
-			SeviceProvided:req.body.SeviceProvided,
-			Description:req.body.Description,
 			ScheduledDay:req.body.ScheduledDay,
 			ScheduledHour:req.body.ScheduledHour,
 			ClientName:req.body.ClientName,
@@ -112,7 +108,7 @@ router.put('/update/Day',AdjustTime,async(req,res)=>{
 			}
 		});
 		if(result){
-			const Types='{"type":["SeviceProvided","Description","ScheduledDay","ScheduledHour","ClientName"]}';
+			const Types='{"type":["ScheduledDay","ScheduledHour","ClientName"]}';
 			const obj=JSON.parse(Types);
 
 			for(var x=0;x<obj.type.length;x++){
