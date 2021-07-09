@@ -22,7 +22,15 @@ const ProductSales=database.define('ProductSales',{
             model:SalesRecord,
             key:'id'
         }
-    }
+    },
+    Amount:{
+        type:Sequelize.INTEGER,
+        allowNull:false
+    },
+    Weight:{
+        type:Sequelize.FLOAT,
+        allowNull:true
+    },
 })
 
 module.exports=ProductSales;

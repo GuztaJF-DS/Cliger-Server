@@ -1,5 +1,5 @@
 const express=require('express');
-const router=express.router();
+const router=express.Router();
 const bodyParser=require('body-parser');
 const cors=require('cors');
 
@@ -11,8 +11,6 @@ router.use(cors());
 router.post('/newRecord',async(req,res)=>{
     try{
         const result=await SalesRecord.create({
-            Amount:req.body.Amount,
-            Weight:req.body.Weight,
             TotalBuyPrice:req.body.TotalBuyPrice,
             MoneyPayed:req.body.MoneyPayed,
             PayBack:req.body.PayBack,
@@ -22,12 +20,14 @@ router.post('/newRecord',async(req,res)=>{
             for(var x=0;x<req.body.ProductId.length;x++){
                 const result2=await ProductSales.create({
                     ProductId:req.body.ProductId[x],
-                    SalesId:result.id
+                    SalesId:result.id,
+                    Amount:req.body.Amount[x],
+                    Weight:req.body.Weight[x],
                 });
                 if(result2){
                     console.log("1");
                 }else{
-                    console.log.log("0");
+                    console.log("0");
                 }
             }
             
