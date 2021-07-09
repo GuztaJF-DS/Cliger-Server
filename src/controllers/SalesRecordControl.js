@@ -18,16 +18,14 @@ router.post('/newRecord',async(req,res)=>{
         })
         if(result){
             for(var x=0;x<req.body.ProductId.length;x++){
-                const result2=await ProductSales.create({
+                const resp=await ProductSales.create({
                     ProductId:req.body.ProductId[x],
                     SalesId:result.id,
                     Amount:req.body.Amount[x],
                     Weight:req.body.Weight[x],
                 });
-                if(result2){
-                    console.log("1");
-                }else{
-                    console.log("0");
+                if(!resp){
+                    res.json({error:"Could not Create"});
                 }
             }
             

@@ -19,13 +19,17 @@ router.post('/register',AdjustTime,async(req,res)=>{
 			userId:req.body.userId
 		})
 		if(result){	
-			const resp=await ProSchedule.create({
-				ScheduleId:result.id,
-				ProSerId:req.body.ProSerId
-			})
-			if(resp){
-				res.json({menssage:"Sucess on Create"})
+			for(var x=0;x<req.body.ProSerId.length;x++){
+				const resp=await ProSchedule.create({
+					ScheduleId:result.id,
+					ProSerId:req.body.ProSerId[x]
+				})
+				if(!resp){
+					res.json({error:"Could not Create"});
+				}
 			}
+			
+			res.json({menssage:"Success on Create"});
 		}
 	}catch(err){
 		res.status(400).send({Error:"Creation Failed"});
@@ -42,7 +46,21 @@ router.get('/getOne',async(req,res)=>{
 		});
 		if(result){
 			const Data=result.dataValues;
-			res.json(Data)
+			const resp=await ProSchedule.findAll({
+				where:{
+					ScheduleId:Data.id
+				}
+			})
+			if(resp){
+				const Data2=resp.map(function(item,ID){
+					let ScheduleId=item.ScheduleId,
+					ProSerId=item.ProSerId
+
+					return {ScheduleId,ProSerId}
+				});
+				res.json(Object.assign(Data,Data2));
+			}
+			
 		}else{
 			res.json({menssage:"Cannot Find any register at this time"})
 		}
@@ -60,12 +78,39 @@ router.get('/getAllFromDay',async(req,res)=>{
 			raw:true
 		})
 		if(result){
-			const data=result.map(function(item,id){
-				return item;
+			const Data=result.map(function(item,ID){
+				let id=item.id,
+				ScheduledDay=item.ScheduledDay,
+				ScheduledHour=item.ScheduledHour,
+				ClientName=item.ClientName
+				return {id,ScheduledDay, ScheduledHour, ClientName};
 			})
-			res.json(data)
+
+			var obj={};
+			for(var x=0;x<Data.length;x++){
+				const resp=await ProSchedule.findAll({
+					where:{
+						ScheduleId:Data[x].id
+					}
+				})
+				if(resp){
+					const Data2=resp.map(function(item,ID){
+						let ScheduleId=item.ScheduleId,
+						ProSerId=item.ProSerId
+						
+						return {ScheduleId,ProSerId}
+					});
+
+					obj[x]=Data2
+				}
+			}
+
+			var end = Data.concat(obj);
+
+			res.json(end);
 		}
-	}catch{
+	}catch(err){
+		console.log(err);
 		res.status(400).send({Error:"Error"});
 	}
 })
