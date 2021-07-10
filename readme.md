@@ -46,7 +46,7 @@ Lastly, it is necessary to say that this is only the first part of the project, 
 *Clone the project and access the folder*
 
 ```bash
-$ git clone https://github.com/GuztaJF-DS/Cliger-Server/ && cd Server
+$ git clone https://github.com/GuztaJF-DS/Cliger-Server/ && cd Cliger-Server
 ```
 *Then Follow these steps*
 
@@ -74,11 +74,12 @@ $ node index.js
 - [X] Create the basic DB Structure
 - [X] Create a basic Register Structure
 - [X] Plan the MER
-- [ ] Apply the MER
+- [X] Apply the MER
 - [X] Create the Login With token Auth
 - [X] Create the Forgot-Password
 - [X] Create the Change Password
 - [X] Create the Delete User
+- [ ] fix some parts of the code
 - [ ] Think what else i will add to this list
 
 # License 🎓
