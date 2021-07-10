@@ -96,6 +96,29 @@ router.put('/Update',async(req,res)=>{
         console.log(err);
         res.status(400).send({error:'error'});
     }
+});
+
+router.delete('/deleteOne',async(req,res)=>{
+    try{    
+        const result=await ProductSales.destroy({
+            where:{
+                ProductId:req.body.id
+            }
+        })
+        const response=await ProductSchedule.destroy({
+            where:{
+                ProSerId:req.body.id
+            }
+        })
+        const resp=await ProSer.destroy({
+            where:{
+                [Op.and]:[{id:req.body.id},{userId:req.body.userId}]
+            }
+        });
+        res.json({menssage:"Product/Service deleted Succesfully"})
+    }catch(err){
+        res.status(400).send({error:'error'});
+    }
 })
 
 module.exports=app=>app.use("/products", router);
