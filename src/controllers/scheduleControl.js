@@ -92,7 +92,7 @@ router.get('/getAllFromDay',async(req,res)=>{
 					where:{
 						ScheduleId:Data[x].id
 					}
-				})
+				});
 				if(resp){
 					const Data2=resp.map(function(item,ID){
 						let ScheduleId=item.ScheduleId,
@@ -101,7 +101,7 @@ router.get('/getAllFromDay',async(req,res)=>{
 						return {ScheduleId,ProSerId}
 					});
 
-					obj[x]=Data2
+					obj[x]=Data2;
 				}
 			}
 
@@ -110,7 +110,6 @@ router.get('/getAllFromDay',async(req,res)=>{
 			res.json(end);
 		}
 	}catch(err){
-		console.log(err);
 		res.status(400).send({Error:"Error"});
 	}
 })

@@ -36,4 +36,86 @@ router.post('/newRecord',async(req,res)=>{
     }
 })
 
+router.get('/GetAll',async(req,res)=>{
+    try{
+        const result=await SalesRecord.findAll({
+            where:{
+                userId:req.body.userId
+            }
+        });
+        if(result){
+            const Data=result.map(function(item,ID){
+                let TotalBuyPrice=item.TotalBuyPrice,
+                MoneyPayed=item.MoneyPayed,
+                PayBack=item.PayBack,
+                id=item.id
+                
+                return {id,TotalBuyPrice, MoneyPayed, PayBack}
+            });
+
+            var obj={};
+            for(var x=0;x<Data.length;x++){
+                const resp=await ProductSales.findAll({
+                    where:{
+                        SalesId:Data[x].id
+                    }
+                });
+                if(resp){
+                    const Data2=resp.map(function(item,ID){
+                        let SalesId=item.SalesId,
+                        ProductId=item.ProductId,
+                        Amount=item.Amount,
+                        Weight=item.Weight;
+    
+    
+                        return {SalesId,ProductId,Amount,Weight}
+                    })
+
+                    obj[x]=Data2;
+                }
+            }
+            let end=Data.concat(obj);
+            res.json(end);
+        }
+    }catch(err){
+        res.status(400).send({error:"error"});
+    }
+});
+
+router.get('/GetOne',async(req,res)=>{
+    try{
+        const result=await SalesRecord.findOne({
+            where:{
+                userId:req.body.userId,
+                id:req.body.id
+            }
+        });
+        if(result){
+            const resp=await ProductSales.findAll({
+                where:{
+                    SalesId:result.id
+                }
+            });
+            if(resp){
+                const Data2=resp.map(function(item,ID){
+                    let SalesId=item.SalesId,
+                    ProductId=item.ProductId,
+                    Amount=item.Amount,
+                    Weight=item.Weight;
+
+
+                    return {SalesId,ProductId,Amount,Weight}
+                })
+                var obj=result.dataValues;
+                var end= Object.assign(obj, Data2);
+
+                res.json(end);
+            }
+        }
+    }catch(err){
+        console.log(err);
+        res.status(400).send({error:"error"});
+    }
+})
+
 module.exports=app=>app.use("/SalesRecord",router);

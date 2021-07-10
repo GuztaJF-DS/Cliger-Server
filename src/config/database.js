@@ -15,7 +15,8 @@ async function run(){
   const connection=await mysql.createConnection({host:process.env.DBHOST,port:process.env.DBPORT,user:process.env.DBUSERNAME,password:process.env.DBPASSWORD});
   await connection.query(`CREATE DATABASE IF NOT EXISTS \`${process.env.DBNAME}\`;`);
 
-  const resultado=await db.sync({ alter: true });
+  // const resultado=await db.sync({ alter: true });
+  const resultado=await db.sync();
 }
 
 
