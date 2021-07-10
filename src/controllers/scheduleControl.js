@@ -32,6 +32,7 @@ router.post('/register',AdjustTime,async(req,res)=>{
 			res.json({menssage:"Success on Create"});
 		}
 	}catch(err){
+		console.log(err);
 		res.status(400).send({Error:"Creation Failed"});
 	}
 	
@@ -125,16 +126,15 @@ router.delete('/delete/One',async(req,res)=>{
 			const DelX=await ProSchedule.destroy({
 				where:{ScheduleId:find.id}
 			})
-			if(DelX){
-				const del=await Schedule.destroy({
-					where:{id:find.id}
-				})
-				if(del){
-					res.json({menssage:"Shedule deleted"})
-				}
-				else{
-					res.json({Error:"Schedule not deleted"})
-				}
+			
+			const del=await Schedule.destroy({
+				where:{id:find.id}
+			})
+			if(del){
+				res.json({menssage:"Shedule deleted"})
+			}
+			else{
+				res.json({Error:"Schedule not deleted"})
 			}
 		}
 	}catch(err){
@@ -187,6 +187,24 @@ router.put('/update',AdjustTime,async(req,res)=>{
 		if(result){
 			const Types='{"type":["ScheduledDay","ScheduledHour","ClientName"]}';
 			const obj=JSON.parse(Types);
+			var Opps="";
+
+
+			if(req.body.ProSerIdToChange!="",req.body.ProSerIdToChange!=null){
+				const resp=await ProSchedule.findOne({
+					where:{
+						[Op.and]: [{ScheduleId:result.id}, { ProSerId:req.body.ProSerIdToChange }]
+					}
+				});
+				if(resp){
+					if(req.body.ProSerIdNew==""||req.body.ProSerIdNew==null){
+						Opps=" Product selected but we didn't find it";					
+					}else{
+						resp.ProSerId=req.body.ProSerIdNew
+						await resp.save();
+					}
+				}
+			}
 
 			for(var x=0;x<obj.type.length;x++){
 				var string=obj.type[x];
@@ -198,7 +216,7 @@ router.put('/update',AdjustTime,async(req,res)=>{
 					console.log("0");
 				}
 			}
-			res.json({menssage:"Values Changed"});
+			res.json({menssage:"Values Changed"+Opps});
 		}
 	}catch(err){
 		console.log(err);

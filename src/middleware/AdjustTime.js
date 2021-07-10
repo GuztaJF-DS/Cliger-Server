@@ -26,7 +26,7 @@ module.exports=async(req,res,next)=>{
 	if(result){
 		var data= result.map(function(item,indice){
 			if(Time==""){
-				req.body.ScheduledHour=id.ScheduledHour;
+				req.body.ScheduledHour=item.ScheduledHour;
 				Time=req.body.ScheduledHour;
 			}
 			let ScheduledHour=item.ScheduledHour,
