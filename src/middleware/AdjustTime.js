@@ -38,7 +38,7 @@ module.exports=async(req,res,next)=>{
 
 		var y=Time;
 		const [hour,min]=y.split(":");
-		if(min%10!=0||min<0||min>59||min==""){
+		if(min%10!=0||min<0||min>59||min==""||hour>23||hour<0){
 			return res.status(400).send({"error":"The Number Is Invalid"});
 		}
 		else{

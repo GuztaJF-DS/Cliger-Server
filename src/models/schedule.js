@@ -3,15 +3,7 @@ const Database=require("../config/database");
 const User=require("./user");
 
 const Schedule = Database.define("schedule", {
-	  SeviceProvided: {
-        type: Sequelize.STRING,
-        allowNull:false
-    },
-	  Description: {
-        type: Sequelize.TEXT,
-        allowNull:false
-    },
-      ScheduledDay: {
+	  ScheduledDay: {
         type: Sequelize.DATEONLY,
         allowNull:false
     },
