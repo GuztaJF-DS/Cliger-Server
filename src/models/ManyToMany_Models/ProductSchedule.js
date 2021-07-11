@@ -8,7 +8,8 @@ const ProductSchedule=Database.define("ProductSchedule",{
     ScheduleId:{
         type:Sequelize.INTEGER,
         allowNull:false,
-        deleteOn:'CASCADE',
+        onDelete:'cascade',
+        hooks:'true',
         references:{
             model:Schedule,
             key:'id'
@@ -17,7 +18,8 @@ const ProductSchedule=Database.define("ProductSchedule",{
     ProSerId:{
         type:Sequelize.INTEGER,
         allowNull:false,
-        deleteOn:'CASCADE',
+        onDelete:'cascade',
+        hooks:'true',
         references:{
             model:ProSer,
             key:'id'

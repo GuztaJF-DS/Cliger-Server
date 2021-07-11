@@ -15,9 +15,17 @@ const SalesRecord=database.define('SalesRecord',{
     PayBack:{
         type:Sequelize.FLOAT,
         allowNull:true
+    },
+    userId:{
+        type:Sequelize.INTEGER,
+        allowNull:false,
+        onDelete:'cascade',
+        hooks:'true',
+        references:{
+            model:User,
+            key:'id'
+        }
     }
 });
-User.hasMany(SalesRecord,{onDelete:'CASCADE'});
-SalesRecord.belongsTo(User);
 
 module.exports=SalesRecord;

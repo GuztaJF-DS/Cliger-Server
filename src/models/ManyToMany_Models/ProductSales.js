@@ -8,7 +8,8 @@ const ProductSales=database.define('ProductSales',{
     ProductId:{
         type:Sequelize.INTEGER,
         allowNull:false,
-        onDelete:'CASCADE',
+        onDelete:'cascade',
+        hooks:'true',
         references:{
             model:ProSer,
             key:'id'
@@ -17,7 +18,8 @@ const ProductSales=database.define('ProductSales',{
     SalesId:{
         type:Sequelize.INTEGER,
         allowNull:false,
-        onDelete:'CASCADE',
+        onDelete:'cascade',
+        hooks:'true',
         references:{
             model:SalesRecord,
             key:'id'

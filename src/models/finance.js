@@ -6,10 +6,18 @@ const FinanceData=Database.define("finances",{
     CurrentBalance:{
         type: Sequelize.INTEGER,
         allowNull:false
+    },
+    userId:{
+        type:Sequelize.INTEGER,
+        allowNull:false,
+        onDelete:'cascade',
+        hooks:'true',
+        references:{
+            model:User,
+            key:'id'
+        }
     }
 });
 
-User.hasMany(FinanceData,{onDelete:'CASCADE'});
-FinanceData.belongsTo(User);
 
 module.exports=FinanceData;

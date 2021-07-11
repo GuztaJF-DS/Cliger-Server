@@ -14,10 +14,18 @@ const Schedule = Database.define("schedule", {
       ClientName:{
         type:Sequelize.STRING,
         allowNull:true
-      }
+      },
+      userId:{
+        type:Sequelize.INTEGER,
+        allowNull:false,
+        onDelete:'cascade',
+        hooks:'true',
+        references:{
+            model:User,
+            key:'id'
+        }
+    }
 	});
 
-User.hasMany(Schedule,{onDelete:'CASCADE'});
-Schedule.belongsTo(User);
 
 module.exports=Schedule;

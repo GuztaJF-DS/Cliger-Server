@@ -9,6 +9,9 @@ const { Op } = require("sequelize");
 require("dotenv-safe").config();
 
 const User=require('../models/user');
+const Product=require('../models/product');
+const ProductSales=require('../models/ManyToMany_Models/ProductSales');
+const productSchedule=require('../models/ManyToMany_Models/ProductSchedule');
 const transporter=require('../modules/mail');
 const emailFilter=require('../middleware/filter');
 
@@ -71,24 +74,30 @@ router.post('/delete/User',async(req,res)=>{
 			Email:req.body.Email
 		}})
 		if(result){
-			bcrypt.compare(req.body.Password,result.Password, async(err,resp)=>{
-				if(resp){
-					const del=await User.destroy({where:{
-						Email:req.body.Email
-					}})
-					if(del){
-						res.json({mensage:"User Deleted"});
-					}
-				}
-				else{
-					res.json({Error:"Wrong Password"});
-				}
+			const findPro=await Product.findAll({
+				where:{userId:result.id}
 			})
+			if(findPro){
+				for(var x=0;x<findPro.length;x++){
+					const del1=await ProductSales.destroy({
+				 		where:{ProductId:findPro[x].id}
+					});
+					const del2=await productSchedule.destroy({
+						where:{ProSerId:findPro[x].id}
+				   });
+				}
+			}
+			const del=await User.destroy({where:{
+				id:result.id
+			}})
+			console.log('\n------------------------------------------------------------\n')
+			res.json({mensage:"User Deleted"});
 		}else{
 			res.json({Error:"Wrong Email"});
 		}
 	}catch(err){
-		res.status(400).send({Error:"deletation Failed"});
+		console.log(err);
+		res.status(400).send({Error:"delete Failed"});
 	}
 });
 

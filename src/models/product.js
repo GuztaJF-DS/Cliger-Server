@@ -27,10 +27,17 @@ const ProductService=Database.define('productService',{
     TotalAmount:{
         type:Sequelize.INTEGER,
         allowNull:true
+    },
+    userId:{
+        type:Sequelize.INTEGER,
+        allowNull:false,
+        onDelete:'cascade',
+        hooks:'true',
+        references:{
+            model:User,
+            key:'id'
+        }
     }
 });
-
-User.hasMany(ProductService,{onDelete:'CASCADE'});
-ProductService.belongsTo(User);
 
 module.exports=ProductService;
