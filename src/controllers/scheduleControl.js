@@ -2,7 +2,7 @@ const express=require('express');
 const router=express.Router();
 const bodyParser=require('body-parser');
 const cors = require('cors');
-const { Op } = require("sequelize");
+const { Op, json } = require("sequelize");
 
 const Schedule=require('../models/Schedule');
 const ProSchedule=require('../models/ManyToMany_Models/ProductSchedule');
@@ -59,7 +59,11 @@ router.get('/getOne',async(req,res)=>{
 
 					return {ScheduleId,ProSerId}
 				});
-				res.json(Object.assign(Data,Data2));
+				var end="["+JSON.stringify(Data)+',{"'+Data.id+'":'+JSON.stringify(Data2)+'}]';
+
+				var DataEnd = JSON.parse(end);
+
+				res.json(DataEnd);
 			}
 			
 		}else{
@@ -95,14 +99,18 @@ router.get('/getAllFromDay',async(req,res)=>{
 					}
 				});
 				if(resp){
+					let RightID;
 					const Data2=resp.map(function(item,ID){
 						let ScheduleId=item.ScheduleId,
 						ProSerId=item.ProSerId
+
+						RightID=ScheduleId;
 						
 						return {ScheduleId,ProSerId}
 					});
 
-					obj[x]=Data2;
+
+					obj[RightID]=Data2;
 				}
 			}
 
@@ -111,6 +119,7 @@ router.get('/getAllFromDay',async(req,res)=>{
 			res.json(end);
 		}
 	}catch(err){
+		console.log(err);
 		res.status(400).send({Error:"Couldn't Get the Data"});
 	}
 })
