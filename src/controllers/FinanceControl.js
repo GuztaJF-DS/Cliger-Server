@@ -15,11 +15,9 @@ router.post('/register',async(req,res)=>{
         })
         if(Result){
             res.json({menssage:"New Record made"});
-        }else{
-            res.json({error:"Cannot make a new Record"});
         }
     }catch(err){
-        res.status(400).send({error:"error"});
+        res.status(400).send({error:"Cannot make a new Record"});
     }
 });
 
@@ -43,7 +41,7 @@ router.get('/getAll',async(req,res)=>{
             
         }
     }catch(err){
-        res.status(400).send({error:"error"});
+        res.status(400).send({error:"Couldn't Get the Data"});
     }
 })
 

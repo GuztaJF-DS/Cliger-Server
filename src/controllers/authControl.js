@@ -41,7 +41,7 @@ router.post('/register',emailFilter,async(req,res,next)=>{
 		}
 	})
 	}catch(err){
-		res.status(400).send({error:"Registration Failed"});
+		res.status(400).send({error:"Record Failed"});
 	}
 
 });
@@ -99,13 +99,11 @@ router.post('/delete/User',async(req,res)=>{
 			const del=await User.destroy({where:{
 				id:result.id
 			}})
-			console.log('\n------------------------------------------------------------\n')
 			res.json({mensage:"User Deleted"});
 		}else{
 			res.json({Error:"Wrong Email"});
 		}
 	}catch(err){
-		console.log(err);
 		res.status(400).send({Error:"delete Failed"});
 	}
 });
@@ -124,15 +122,12 @@ router.put('/update',async(req,res)=>{
 				if(req.body[string]!=""){
 				result[string]=req.body[string];
 				await result.save();
-				console.log("1");
-			}else{
-				console.log("0");
 			}
 			res.json({menssage:"Values Updated"});
 		}
 	}
 	}catch(err){
-
+		res.status(400).send({Error:"Update Failed"});
 	}
 })
 
@@ -167,7 +162,7 @@ router.post('/forgotPass',async(req,res)=>{
 	        }
 	    });
 	}catch(err){
-		res.status(400).send({Error:"Failed"})
+		res.status(400).send({Error:"Email not Sended"})
 	}
 })
 
@@ -198,7 +193,7 @@ router.get('/ConfirmToken',async(req,res)=>{
 			res.json({menssage:"Token confimed"});
 		});		
 	}catch(err){
-		res.status(400).send({Error:"Failed"});
+		res.status(400).send({Error:"Cannot confirm Token, try again Later"});
 	}
 })
 
@@ -224,7 +219,7 @@ router.put('/changePass',async(req,res)=>{
 		}	
 	}catch(err){
 		console.log(err);
-		res.status(400).send({Error:"Failed"});
+		res.status(400).send({Error:"Cannot change Password"});
 	}
 })
 

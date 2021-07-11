@@ -23,7 +23,7 @@ router.post('/New',async(req,res)=>{
             res.json({"menssage":"New Product Recoded"});
         }
     }catch(err){
-        res.status(400).send({error:'Error'});
+        res.status(400).send({error:"Cannot Register, Check if you don't forget to fill the form"});
     }
 });
 
@@ -41,15 +41,16 @@ router.get('/GetAll',async(req,res)=>{
                 Name=item.Name,
                 Description=item.Description,
                 Type=item.Type,
-                Value=item.TotalAmount,
+                Value=item.Value,
+                TotalAmount=item.TotalAmount,
                 userId=item.userId;
 
-                return {id,Code,Name,Description,Type,Value,Value,userId}
+                return {id,Code,Name,Description,Type,Value,TotalAmount,userId}
             })
             res.json(data);
         }
     }catch(err){
-        res.status(400).send({error:'Error'});
+        res.status(400).send({error:"Couldn't Get the Data"});
     }
 });
 
@@ -64,7 +65,7 @@ router.get('/GetOne',async(req,res)=>{
             res.json(result);
         }
     }catch(err){
-        res.status(400).send({error:'Error'});
+        res.status(400).send({error:"Couldn't Get the Data"});
     }
 });
 
@@ -78,15 +79,15 @@ router.put('/Update',async(req,res)=>{
         if(result){
             const Variables='{"vars":["Code","Name","Description","Type","Value","TotalAmount"]}';
             const obj=JSON.parse(Variables);
-
+            
+            console.log(req.body.Value);
             for(var x=0;x<obj.vars.length;x++){
                 const str=obj.vars[x];
-                if(req.body[str]!=null){
+                if(req.body[str]==""||req.body[str]==null){
+                    console.log("");
+                }else{
                     result[str]=req.body[str];
                     await result.save();
-                    console.log("1");
-                }else{
-                    console.log("0");
                 }
             }
             
@@ -94,7 +95,7 @@ router.put('/Update',async(req,res)=>{
         }
     }catch(err){
         console.log(err);
-        res.status(400).send({error:'error'});
+        res.status(400).send({error:"Couldn't Update the Product/Service"});
     }
 });
 
@@ -117,7 +118,7 @@ router.delete('/deleteOne',async(req,res)=>{
         });
         res.json({menssage:"Product/Service deleted Succesfully"})
     }catch(err){
-        res.status(400).send({error:'error'});
+        res.status(400).send({error:"Couldn't Delete"});
     }
 })
 

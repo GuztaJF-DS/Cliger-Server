@@ -66,7 +66,7 @@ router.get('/getOne',async(req,res)=>{
 			res.json({menssage:"Cannot Find any register at this time"})
 		}
 	}catch(err){
-		res.status(400).send({Error:"Error"});
+		res.status(400).send({Error:"Couldn't Get the Data"});
 	}
 })
 
@@ -111,7 +111,7 @@ router.get('/getAllFromDay',async(req,res)=>{
 			res.json(end);
 		}
 	}catch(err){
-		res.status(400).send({Error:"Error"});
+		res.status(400).send({Error:"Couldn't Get the Data"});
 	}
 })
 
@@ -139,7 +139,7 @@ router.delete('/delete/One',async(req,res)=>{
 		}
 	}catch(err){
 		console.log(err)
-		res.status(400).send({Error:"Error"})
+		res.status(400).send({Error:"Couldn't Delete"})
 	}
 })
 
@@ -173,7 +173,7 @@ router.delete('/delete/EntireDay',async(req,res)=>{
 			}
 		}
 	}catch(err){
-		res.status(400).send({Error:"Error"});
+		res.status(400).send({Error:"Records not Deleted"});
 	}
 })
 
@@ -220,7 +220,7 @@ router.put('/update',AdjustTime,async(req,res)=>{
 		}
 	}catch(err){
 		console.log(err);
-		res.status(400).send({Error:"Error"});
+		res.status(400).send({Error:"Couldn't Update the Schedule"});
 	}
 })
 

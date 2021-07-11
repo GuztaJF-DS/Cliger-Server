@@ -24,15 +24,12 @@ router.post('/newRecord',async(req,res)=>{
                     Amount:req.body.Amount[x],
                     Weight:req.body.Weight[x],
                 });
-                if(!resp){
-                    res.json({error:"Could not Create"});
-                }
             }
             
             res.json({menssage:"new record Created"});
         }
     }catch(err){
-        res.status(400).send({error:"error"});
+        res.status(400).send({error:"Could not Create"});
     }
 })
 
@@ -78,7 +75,7 @@ router.get('/GetAll',async(req,res)=>{
             res.json(end);
         }
     }catch(err){
-        res.status(400).send({error:"error"});
+        res.status(400).send({error:"Couldn't Get the Data"});
     }
 });
 
@@ -114,7 +111,7 @@ router.get('/GetOne',async(req,res)=>{
         }
     }catch(err){
         console.log(err);
-        res.status(400).send({error:"error"});
+        res.status(400).send({error:"Couldn't Get the Data"});
     }
 })
 
