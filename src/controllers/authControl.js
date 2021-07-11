@@ -90,6 +90,32 @@ router.post('/delete/User',async(req,res)=>{
 	}catch(err){
 		res.status(400).send({Error:"deletation Failed"});
 	}
+});
+
+router.put('/update',async(req,res)=>{
+	try{
+		const result=await User.findOne({where:{
+			id:req.body.id
+		}})
+		if(result){
+			const json='{"User":["UserName","BirthDate","PhoneNumber"]}';
+			const obj=JSON.parse(json);
+
+			for(var x=0;x<obj.User.length;x++){
+				var string=obj.User[x];
+				if(req.body[string]!=""){
+				result[string]=req.body[string];
+				await result.save();
+				console.log("1");
+			}else{
+				console.log("0");
+			}
+			res.json({menssage:"Values Updated"});
+		}
+	}
+	}catch(err){
+
+	}
 })
 
 router.post('/forgotPass',async(req,res)=>{
@@ -111,7 +137,7 @@ router.post('/forgotPass',async(req,res)=>{
 			from: '<cligeroficial@gmail.com>',
 			to: `<${req.body.Email}>`,
 			subject: 'Recuperação de senha',
-			html: `<p>recupera tua conta ai bro atraves desse token ai ${token}</p>`
+			html: `<p>Olá, pelo visto você gostaria de mudar a sua senha, use esse código aqui para redefinir sua senha ${token}</p>`
 		};
 	    transporter.sendMail(menssage, (err, info) => {
 	        if (err) {
