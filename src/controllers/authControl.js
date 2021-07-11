@@ -12,6 +12,7 @@ const User=require('../models/user');
 const Product=require('../models/product');
 const ProductSales=require('../models/ManyToMany_Models/ProductSales');
 const productSchedule=require('../models/ManyToMany_Models/ProductSchedule');
+
 const transporter=require('../modules/mail');
 const emailFilter=require('../middleware/filter');
 
@@ -53,7 +54,15 @@ router.post('/authenticate',async(req,res)=>{
 		if(result){
 			bcrypt.compare(req.body.Password,result.Password, async(err,resp)=>{
 				if(resp){
-					res.json({menssage:"Success on auth"});
+					res.json({
+						menssage:"Success on auth",
+						id:result.id,
+						UserName:result.UserName,
+						Email:result.Email,
+						BirthDate:result.BirthDate,
+						Cpf:result.Cpf,
+						PhoneNumber:result.PhoneNumber
+					});
 				}
 				else{
 					res.json({Error:"Wrong Password"});
@@ -71,7 +80,7 @@ router.post('/authenticate',async(req,res)=>{
 router.post('/delete/User',async(req,res)=>{
 	try{
 		const result=await User.findOne({where:{
-			Email:req.body.Email
+			id:req.body.id
 		}})
 		if(result){
 			const findPro=await Product.findAll({

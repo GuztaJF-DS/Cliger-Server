@@ -15,7 +15,7 @@ const User = Database.define("users", {
         allowNull:false
     },
       BirthDate: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         allowNull:false
     },
       Cpf: {
