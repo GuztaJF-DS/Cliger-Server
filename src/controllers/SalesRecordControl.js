@@ -25,7 +25,7 @@ router.post('/newRecord',async(req,res)=>{
                     Weight:req.body.Weight[x],
                 });
             }
-            
+
             res.json({menssage:"new record Created"});
         }
     }catch(err){
@@ -33,7 +33,7 @@ router.post('/newRecord',async(req,res)=>{
     }
 })
 
-router.get('/GetAll',async(req,res)=>{
+router.post('/GetAll',async(req,res)=>{
     try{
         const result=await SalesRecord.findAll({
             where:{
@@ -46,7 +46,7 @@ router.get('/GetAll',async(req,res)=>{
                 MoneyPayed=item.MoneyPayed,
                 PayBack=item.PayBack,
                 id=item.id
-                
+
                 return {id,TotalBuyPrice, MoneyPayed, PayBack}
             });
 
@@ -63,8 +63,8 @@ router.get('/GetAll',async(req,res)=>{
                         ProductId=item.ProductId,
                         Amount=item.Amount,
                         Weight=item.Weight;
-    
-    
+
+
                         return {SalesId,ProductId,Amount,Weight}
                     })
 
@@ -79,7 +79,7 @@ router.get('/GetAll',async(req,res)=>{
     }
 });
 
-router.get('/GetOne',async(req,res)=>{
+router.post('/GetOne',async(req,res)=>{
     try{
         const result=await SalesRecord.findOne({
             where:{

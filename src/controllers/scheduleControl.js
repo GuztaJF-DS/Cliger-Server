@@ -18,7 +18,7 @@ router.post('/register',AdjustTime,async(req,res)=>{
 			ClientName:req.body.ClientName,
 			userId:req.body.userId
 		})
-		if(result){	
+		if(result){
 			for(var x=0;x<req.body.ProSerId.length;x++){
 				const resp=await ProSchedule.create({
 					ScheduleId:result.id,
@@ -28,17 +28,17 @@ router.post('/register',AdjustTime,async(req,res)=>{
 					res.json({error:"Could not Create"});
 				}
 			}
-			
+
 			res.json({menssage:"Success on Create"});
 		}
 	}catch(err){
 		console.log(err);
 		res.status(400).send({Error:"Creation Failed"});
 	}
-	
+
 })
 
-router.get('/getOne',async(req,res)=>{
+router.post('/getOne',async(req,res)=>{
 	try{
 		const result=await Schedule.findOne({
 			where:{
@@ -65,7 +65,7 @@ router.get('/getOne',async(req,res)=>{
 
 				res.json(DataEnd);
 			}
-			
+
 		}else{
 			res.json({menssage:"Cannot Find any register at this time"})
 		}
@@ -74,8 +74,8 @@ router.get('/getOne',async(req,res)=>{
 	}
 })
 
-router.get('/getAllFromDay',async(req,res)=>{
-	try{	
+router.post('/getAllFromDay',async(req,res)=>{
+	try{
 		const result=await Schedule.findAll({
 			where:{
 				[Op.and]: [{ScheduledDay:req.body.ScheduledDay},{userId:req.body.userId}]
@@ -105,7 +105,7 @@ router.get('/getAllFromDay',async(req,res)=>{
 						ProSerId=item.ProSerId
 
 						RightID=ScheduleId;
-						
+
 						return {ScheduleId,ProSerId}
 					});
 
@@ -135,7 +135,7 @@ router.delete('/delete/One',async(req,res)=>{
 			const DelX=await ProSchedule.destroy({
 				where:{ScheduleId:find.id}
 			})
-			
+
 			const del=await Schedule.destroy({
 				where:{id:find.id}
 			})
@@ -207,7 +207,7 @@ router.put('/update',AdjustTime,async(req,res)=>{
 				});
 				if(resp){
 					if(req.body.ProSerIdNew==""||req.body.ProSerIdNew==null){
-						Opps=" Product selected but we didn't find it";					
+						Opps=" Product selected but we didn't find it";
 					}else{
 						resp.ProSerId=req.body.ProSerIdNew
 						await resp.save();

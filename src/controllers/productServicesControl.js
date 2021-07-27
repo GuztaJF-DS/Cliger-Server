@@ -19,7 +19,7 @@ router.post('/New',async(req,res)=>{
             TotalAmount:req.body.TotalAmount,
             userId:req.body.userId
         });
-        if(result){ 
+        if(result){
             res.json({"menssage":"New Product Recoded"});
         }
     }catch(err){
@@ -27,7 +27,7 @@ router.post('/New',async(req,res)=>{
     }
 });
 
-router.get('/GetAll',async(req,res)=>{
+router.post('/GetAll',async(req,res)=>{
     try{
         const result=await ProSer.findAll({
             where:{
@@ -50,11 +50,12 @@ router.get('/GetAll',async(req,res)=>{
             res.json(data);
         }
     }catch(err){
-        res.status(400).send({error:"Couldn't Get the Data"});
+      console.log(err);
+        res.status(400).json({error:err});
     }
 });
 
-router.get('/GetOne',async(req,res)=>{
+router.post('/GetOne',async(req,res)=>{
     try{
         const result=await ProSer.findOne({
             where:{
@@ -79,7 +80,7 @@ router.put('/Update',async(req,res)=>{
         if(result){
             const Variables='{"vars":["Code","Name","Description","Type","Value","TotalAmount"]}';
             const obj=JSON.parse(Variables);
-            
+
             console.log(req.body.Value);
             for(var x=0;x<obj.vars.length;x++){
                 const str=obj.vars[x];
@@ -90,7 +91,7 @@ router.put('/Update',async(req,res)=>{
                     await result.save();
                 }
             }
-            
+
             res.json({menssage:"Values Changed"});
         }
     }catch(err){
@@ -100,7 +101,7 @@ router.put('/Update',async(req,res)=>{
 });
 
 router.delete('/deleteOne',async(req,res)=>{
-    try{    
+    try{
         const result=await ProductSales.destroy({
             where:{
                 ProductId:req.body.id

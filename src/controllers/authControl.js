@@ -32,16 +32,15 @@ router.post('/register',emailFilter,async(req,res,next)=>{
 			Email:req.body.Email,
 			Password:hash,
 			BirthDate:req.body.BirthDate,
-			Cpf:req.body.Cpf,
 			PhoneNumber:req.body.PhoneNumber,
 			ResetToken:null
 		})
 		if(result){
-			res.json({menssage:"Success on register"});
+			res.json({menssage:"Cadastro bem-sucedido"});
 		}
 	})
 	}catch(err){
-		res.status(400).send({error:"Record Failed"});
+		res.status(400).send({error:"Cadastro mal-sucedido"});
 	}
 
 });
@@ -60,20 +59,19 @@ router.post('/authenticate',async(req,res)=>{
 						UserName:result.UserName,
 						Email:result.Email,
 						BirthDate:result.BirthDate,
-						Cpf:result.Cpf,
 						PhoneNumber:result.PhoneNumber
 					});
 				}
 				else{
-					res.json({Error:"Wrong Password"});
+					res.json({Error:"Senha Errada"});
 				}
 			})
-			
+
 		}else{
-			res.json({Error:"Wrong E-Mail"});
+			res.json({Error:"E-Mail Errado"});
 		}
 	}catch(err){
-		res.status(400).send({Error:"auth Failed"});
+		res.status(400).send({Error:"Autenticação falha"});
 	}
 });
 
@@ -134,7 +132,7 @@ router.put('/update',async(req,res)=>{
 router.post('/forgotPass',async(req,res)=>{
 	try{
 		const token=Generate_Token();
-		
+
 		const mail=await User.findOne({where:{
 			Email:req.body.Email
 		}})
@@ -167,7 +165,7 @@ router.post('/forgotPass',async(req,res)=>{
 })
 
 
-router.get('/ConfirmToken',async(req,res)=>{
+router.post('/ConfirmToken',async(req,res)=>{
 	try{
 		const authHeader=req.headers.authorization;;
 
@@ -191,7 +189,7 @@ router.get('/ConfirmToken',async(req,res)=>{
 				return res.status(401).send({"error":"Token invalid"});
 			}
 			res.json({menssage:"Token confimed"});
-		});		
+		});
 	}catch(err){
 		res.status(400).send({Error:"Cannot confirm Token, try again Later"});
 	}
@@ -207,7 +205,7 @@ router.put('/changePass',async(req,res)=>{
 				const resp=await User.update(
 					{Password:hash},
 					{where:{Email:req.body.Email}}
-				) 
+				)
 				if(resp){
 					result.ResetToken="";
 					await result.save();
@@ -216,7 +214,7 @@ router.put('/changePass',async(req,res)=>{
 			})
 		}else{
 			res.status(400).send({Error:"Email or Token is Invalid"})
-		}	
+		}
 	}catch(err){
 		console.log(err);
 		res.status(400).send({Error:"Cannot change Password"});

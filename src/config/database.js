@@ -17,7 +17,7 @@ async function run(){
 
   // If you have changed the DataBase and want to Update it, use the code below
   // const resultado=await db.sync({ alter: true });
-  
+
   // But If you don't have changed, use this instead, cuz he is faster than the other :)
   const resultado=await db.sync();
 }

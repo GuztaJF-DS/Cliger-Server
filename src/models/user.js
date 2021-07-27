@@ -18,10 +18,6 @@ const User = Database.define("users", {
         type: Sequelize.DATEONLY,
         allowNull:false
     },
-      Cpf: {
-        type: Sequelize.STRING,
-        allowNull:false
-    },
       PhoneNumber: {
         type: Sequelize.INTEGER,
         allowNull:false

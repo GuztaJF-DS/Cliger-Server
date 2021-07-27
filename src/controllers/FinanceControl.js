@@ -21,7 +21,7 @@ router.post('/register',async(req,res)=>{
     }
 });
 
-router.get('/getAll',async(req,res)=>{
+router.post('/getAll',async(req,res)=>{
     try{
         const Result=await Finance.findAll({
             where:{
@@ -38,7 +38,7 @@ router.get('/getAll',async(req,res)=>{
                 return {Id,CurrentBalance,Date,userId}
             })
             res.json(data);
-            
+
         }
     }catch(err){
         res.status(400).send({error:"Couldn't Get the Data"});
