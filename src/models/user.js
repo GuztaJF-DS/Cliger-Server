@@ -26,6 +26,10 @@ const User = Database.define("users", {
         type: Sequelize.STRING,
         allowNull:true
     },
+    ConfirmToken:{
+      type: Sequelize.STRING,
+        allowNull:false
+    }
 	});
 
 module.exports=User;

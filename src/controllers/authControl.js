@@ -16,9 +16,15 @@ const productSchedule=require('../models/ManyToMany_Models/ProductSchedule');
 const transporter=require('../modules/mail');
 const emailFilter=require('../middleware/filter');
 
-function Generate_Token (params={}){
+function GenerateConfirmToken (params={}){
 	return token=jwt.sign(params, process.env.SECRET,{
 		expiresIn:(5*60),
+	});
+}
+
+function GeneratePreLoadToken (params={}){
+	return token=jwt.sign(params, process.env.SECRET,{
+		expiresIn:(24*60*60),
 	});
 }
 
@@ -26,6 +32,7 @@ router.use(cors())
 
 router.post('/register',emailFilter,async(req,res,next)=>{
 	try{
+		const Token=GeneratePreLoadToken();
 		bcrypt.hash(req.body.Password, 10, async(err, hash)=> {
 		const result=await User.create({
 			UserName:req.body.UserName,
@@ -33,14 +40,15 @@ router.post('/register',emailFilter,async(req,res,next)=>{
 			Password:hash,
 			BirthDate:req.body.BirthDate,
 			PhoneNumber:req.body.PhoneNumber,
-			ResetToken:null
+			ResetToken:null,
+			ConfirmToken:Token
 		})
 		if(result){
-			res.json({menssage:"Cadastro bem-sucedido"});
+			res.json({message:"Cadastro bem-sucedido",ConfirmToken:Token,Id:result.id});
 		}
 	})
 	}catch(err){
-		res.status(400).send({error:"Cadastro mal-sucedido"});
+		res.status(400).send({Error:"Cadastro mal-sucedido"});
 	}
 
 });
@@ -54,12 +62,13 @@ router.post('/authenticate',async(req,res)=>{
 			bcrypt.compare(req.body.Password,result.Password, async(err,resp)=>{
 				if(resp){
 					res.json({
-						menssage:"Success on auth",
+						message:"Sucesso no Login",
 						id:result.id,
 						UserName:result.UserName,
 						Email:result.Email,
 						BirthDate:result.BirthDate,
-						PhoneNumber:result.PhoneNumber
+						PhoneNumber:result.PhoneNumber,
+						ConfirmToken:result.ConfirmToken
 					});
 				}
 				else{
@@ -71,9 +80,45 @@ router.post('/authenticate',async(req,res)=>{
 			res.json({Error:"E-Mail Errado"});
 		}
 	}catch(err){
+		console.log(err);
 		res.status(400).send({Error:"Autenticação falha"});
 	}
 });
+
+router.post('/GetUserbyToken',async(req,res)=>{
+	try{
+		jwt.verify(req.body.ConfirmToken,process.env.SECRET,async(err,decoded)=>{
+			if(err){
+				const result=await User.findOne({where:{
+					ConfirmToken:req.body.ConfirmToken
+				}})
+				if(result){
+					result.ConfirmToken=GeneratePreLoadToken();
+					await result.save();
+					return res.json({"error":"Token invalid"});
+				}
+			}
+		});
+		const result=await User.findOne({where:{
+			ConfirmToken:req.body.ConfirmToken
+		}})
+		if(result){
+			res.json({
+				message:"Sucesso no Login",
+				id:result.id,
+				UserName:result.UserName,
+				Email:result.Email,
+				BirthDate:result.BirthDate,
+				PhoneNumber:result.PhoneNumber
+			});
+		}else{
+			res.json({Error:"não encontrado"});
+		}
+	}catch(err){
+		console.log(err)
+		res.status(400).send({Error:"não encontrado"});
+	}
+})
 
 router.post('/delete/User',async(req,res)=>{
 	try{
@@ -97,7 +142,7 @@ router.post('/delete/User',async(req,res)=>{
 			const del=await User.destroy({where:{
 				id:result.id
 			}})
-			res.json({mensage:"User Deleted"});
+			res.json({message:"User Deleted"});
 		}else{
 			res.json({Error:"Wrong Email"});
 		}
@@ -121,7 +166,7 @@ router.put('/update',async(req,res)=>{
 				result[string]=req.body[string];
 				await result.save();
 			}
-			res.json({menssage:"Values Updated"});
+			res.json({message:"Values Updated"});
 		}
 	}
 	}catch(err){
@@ -131,7 +176,7 @@ router.put('/update',async(req,res)=>{
 
 router.post('/forgotPass',async(req,res)=>{
 	try{
-		const token=Generate_Token();
+		const token=GenerateConfirmToken();
 
 		const mail=await User.findOne({where:{
 			Email:req.body.Email
@@ -152,11 +197,11 @@ router.post('/forgotPass',async(req,res)=>{
 		};
 	    transporter.sendMail(menssage, (err, info) => {
 	        if (err) {
-	            console.log(`Error occurred. ${err.menssage}`);
+	            console.log(`Error occurred. ${err.message}`);
 	            res.json({Error:"Email not sended"});
 	        }else{
-	        	res.json({menssage:"Email sended", Token:`${token}`})
-		        console.log(`Message sent:, ${info.menssageId}`);
+	        	res.json({message:"Email sended", Token:`${token}`})
+		        console.log(`Message sent:, ${info.messageId}`);
 	        }
 	    });
 	}catch(err){
@@ -188,7 +233,7 @@ router.post('/ConfirmToken',async(req,res)=>{
 			if(err){
 				return res.status(401).send({"error":"Token invalid"});
 			}
-			res.json({menssage:"Token confimed"});
+			res.json({message:"Token confimed"});
 		});
 	}catch(err){
 		res.status(400).send({Error:"Cannot confirm Token, try again Later"});
@@ -209,7 +254,7 @@ router.put('/changePass',async(req,res)=>{
 				if(resp){
 					result.ResetToken="";
 					await result.save();
-					res.json({menssage:"Password Changed"})
+					res.json({message:"Password Changed"})
 				}
 			})
 		}else{
