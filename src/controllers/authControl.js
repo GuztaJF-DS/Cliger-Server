@@ -4,7 +4,6 @@ const bodyParser=require('body-parser');
 const bcrypt=require("bcryptjs");
 const jwt=require('jsonwebtoken');
 const cors = require('cors');
-const { Op } = require("sequelize");
 
 require("dotenv-safe").config();
 
@@ -16,16 +15,20 @@ const productSchedule=require('../models/ManyToMany_Models/ProductSchedule');
 const transporter=require('../modules/mail');
 const emailFilter=require('../middleware/filter');
 
-function GenerateConfirmToken (params={}){
-	return token=jwt.sign(params, process.env.SECRET,{
-		expiresIn:(5*60),
-	});
-}
-
 function GeneratePreLoadToken (params={}){
 	return token=jwt.sign(params, process.env.SECRET,{
 		expiresIn:(24*60*60),
 	});
+}
+
+function GenerateConfirmToken(){
+	var randomized = Math.ceil(Math.random() * Math.pow(10,5));
+	var digit = Math.ceil(Math.log(randomized));
+	while(digit > 10){
+		digit = Math.ceil(Math.log(digit));
+	}
+	var id = randomized + digit;
+	return (id).toString();
 }
 
 router.use(cors())
@@ -142,12 +145,12 @@ router.post('/delete/User',async(req,res)=>{
 			const del=await User.destroy({where:{
 				id:result.id
 			}})
-			res.json({message:"User Deleted"});
+			res.json({message:"Usuário deletado"});
 		}else{
-			res.json({Error:"Wrong Email"});
+			res.json({Error:"Email Errado"});
 		}
 	}catch(err){
-		res.status(400).send({Error:"delete Failed"});
+		res.status(400).send({Error:"Falha na operação"});
 	}
 });
 
@@ -166,103 +169,107 @@ router.put('/update',async(req,res)=>{
 				result[string]=req.body[string];
 				await result.save();
 			}
-			res.json({message:"Values Updated"});
+			res.json({message:"Valores Atualizados"});
 		}
 	}
 	}catch(err){
-		res.status(400).send({Error:"Update Failed"});
+		res.status(400).send({Error:"Atualização falha"});
 	}
 })
 
 router.post('/forgotPass',async(req,res)=>{
 	try{
-		const token=GenerateConfirmToken();
+		let Token=GenerateConfirmToken();
 
-		const mail=await User.findOne({where:{
+		const result=await User.findOne({where:{
 			Email:req.body.Email
 		}})
-		if(mail){
-			mail.ResetToken=token;
-			await mail.save();
+		if(result){
+			bcrypt.hash(Token, 10, async(err, hash)=> {
+				result.ResetToken=hash;
+				const resp=await result.save();
+			});
 		}
 		else{
-			res.status(400).send({Error:"Email Not Exists"});
+			res.json({Error:"Email Not Exists"});
+			return;
 		}
+		
+			
 
-		const menssage = {
+		const message = {
 			from: '<cligeroficial@gmail.com>',
 			to: `<${req.body.Email}>`,
 			subject: 'Recuperação de senha',
-			html: `<p>Olá, pelo visto você gostaria de mudar a sua senha, use esse código aqui para redefinir sua senha ${token}</p>`
+			html: `<p>Olá, pelo visto você gostaria de mudar a sua senha, use esse código aqui para redefinir sua senha ${Token}</p>`
 		};
-	    transporter.sendMail(menssage, (err, info) => {
+			console.log("\nEnviando o Email");
+			transporter.sendMail(message, (err, info) => {
 	        if (err) {
 	            console.log(`Error occurred. ${err.message}`);
 	            res.json({Error:"Email not sended"});
 	        }else{
-	        	res.json({message:"Email sended", Token:`${token}`})
 		        console.log(`Message sent:, ${info.messageId}`);
+	        	res.json({message:"Email sended"})
 	        }
 	    });
 	}catch(err){
-		res.status(400).send({Error:"Email not Sended"})
+		console.log(err);
+		res.status(400).send({Error:"Email não Enviado"})
 	}
 })
 
 
 router.post('/ConfirmToken',async(req,res)=>{
 	try{
-		const authHeader=req.headers.authorization;;
-
-		if(!authHeader){
-			return res.status(401).send({"error":"No Token provided"});
+		const result=await User.findOne({where:{
+			Email:req.body.Email
+		}})
+		if(result){			
+			bcrypt.compare(req.body.Token,result.ResetToken, async(err,resp)=>{
+				if(resp){
+					res.json({message:"Código confirmado"});
+				}
+				else if(err){
+					console.log(err);
+					res.json({Error:"Código Invalido"});
+				}
+				else{
+					res.json({Error:"Código Errado"});
+				}
+			})
+		}else{
+			console.log('a');
 		}
-
-		const parts=authHeader.split(' ');
-
-		if(!parts.length===2){
-			return res.status(401).send({"error":"Token Error"});
-		}
-		const [scheme,token]=parts;
-
-		if(!/^Bearer$/i.test(scheme)){
-			return res.status(401).send({"error":"Token MalFormatted"});
-		}
-
-		jwt.verify(token,process.env.SECRET,async(err,decoded)=>{
-			if(err){
-				return res.status(401).send({"error":"Token invalid"});
-			}
-			res.json({message:"Token confimed"});
-		});
-	}catch(err){
+	}
+	catch(err){
+		console.log(err);
 		res.status(400).send({Error:"Cannot confirm Token, try again Later"});
 	}
 })
 
-router.put('/changePass',async(req,res)=>{
+router.post('/ChangePass',async(req,res)=>{
 	try{
 		const result=await User.findOne({where:{
-			[Op.and]:[{Email:req.body.Email},{ResetToken:req.body.Token}]
-		}});
-		if(result){
-			bcrypt.hash(req.body.Password, 10, async(err, hash)=> {
-				const resp=await User.update(
-					{Password:hash},
-					{where:{Email:req.body.Email}}
-				)
+			Email:req.body.Email
+		}})
+		if(result){			
+			bcrypt.compare(req.body.Token,result.ResetToken, async(err,resp)=>{
 				if(resp){
-					result.ResetToken="";
-					await result.save();
-					res.json({message:"Password Changed"})
+					bcrypt.hash(req.body.Password, 10, async(err, hash)=> {
+						result.Password=hash,
+						result.ResetToken="";
+						await result.save();
+						res.json({message:"Password Changed"})
+					})
 				}
-			})
+		})
 		}else{
-			res.status(400).send({Error:"Email or Token is Invalid"})
+			res.json({Error:"Email or Token is Invalid"})
 		}
 	}catch(err){
 		console.log(err);
-		res.status(400).send({Error:"Cannot change Password"});
+		res.json({Error:"Cannot change Password"});
 	}
 })
 
