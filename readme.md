@@ -79,7 +79,7 @@ $ node index.js
 - [X] Create the Forgot-Password
 - [X] Create the Change Password
 - [X] Create the Delete User
-- [ ] fix some parts of the code
+- [X] fix some parts of the code
 - [ ] Think what else i will add to this list
 
 # License 🎓
