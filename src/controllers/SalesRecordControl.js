@@ -64,7 +64,6 @@ router.post('/GetAll',async(req,res)=>{
                         Amount=item.Amount,
                         Weight=item.Weight;
 
-
                         return {SalesId,ProductId,Amount,Weight}
                     })
 
