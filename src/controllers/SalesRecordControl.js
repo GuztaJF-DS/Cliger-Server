@@ -68,7 +68,7 @@ router.post('/GetAll',async(req,res)=>{
                         return {SalesId,ProductId,Amount,Weight}
                     })
 
-                    obj[x]=Data2;
+                    obj[Data2[x].SalesId]=Data2;
                 }
             }
             let end=Data.concat(obj);
