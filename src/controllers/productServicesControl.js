@@ -35,19 +35,23 @@ router.post('/GetAll',async(req,res)=>{
             },raw:true
         });
         if(result){
-            const data=result.map(function(item,ID){
-                let id=item.id,
-                Code=item.Code,
-                Name=item.Name,
-                Description=item.Description,
-                Type=item.Type,
-                Value=item.Value,
-                TotalAmount=item.TotalAmount,
-                userId=item.userId;
-
-                return {id,Code,Name,Description,Type,Value,TotalAmount,userId}
-            })
-            res.json(data);
+            if(Object.values(result).length==0){
+                res.json({Message:"Not Found"});
+            }else{
+                const data=result.map(function(item,ID){
+                    let id=item.id,
+                    Code=item.Code,
+                    Name=item.Name,
+                    Description=item.Description,
+                    Type=item.Type,
+                    Value=item.Value,
+                    TotalAmount=item.TotalAmount,
+                    userId=item.userId;
+    
+                    return {id,Code,Name,Description,Type,Value,TotalAmount,userId}
+                })
+                res.json(data);
+            }
         }
     }catch(err){
       console.log(err);
