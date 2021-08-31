@@ -64,7 +64,7 @@ $ cp .env.example .env
 # Start the MySql server
 
 # And then you run the api service in a development environment
-$ node index.js
+$ npm run build
 
 # Well done, project is started!
 ```
