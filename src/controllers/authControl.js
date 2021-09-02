@@ -15,6 +15,7 @@ const productSchedule=require('../models/ManyToMany_Models/ProductSchedule');
 const transporter=require('../modules/mail');
 const emailFilter=require('../middleware/filter');
 
+
 function GeneratePreLoadToken (params={}){
 	return token=jwt.sign(params, process.env.SECRET,{
 		expiresIn:(24*60*60),
@@ -33,7 +34,11 @@ function GenerateConfirmToken(){
 
 router.use(cors())
 
-router.post('/register',emailFilter,async(req,res,next)=>{
+router.get("/test",async(req,res)=>{
+	res.status(200).send({message:"hello"});
+})
+
+router.post('/register',emailFilter,async(req,res)=>{
 	try{
 		const Token=GeneratePreLoadToken();
 		bcrypt.hash(req.body.Password, 10, async(err, hash)=> {
@@ -272,5 +277,6 @@ router.post('/ChangePass',async(req,res)=>{
 		res.json({Error:"Cannot change Password"});
 	}
 })
+
 
 module.exports=app=>app.use('/auth',router);
