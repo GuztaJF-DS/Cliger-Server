@@ -9,4 +9,18 @@ describe("Auth's Tests",()=>{
         expect(200)
     })
     
+    it('Should Sign Up', async()=>{
+        let EmailRandomString=Math.random().toString(36).replace(/[^a-z]+/g,'').substr(0,7);
+        const response=await request(App)
+        .post('/auth/register')
+        .send({
+            UserName:"Test",
+            Email:EmailRandomString+"@test.com",
+            Password:"Test",
+            BirthDate:"2000-12-12",
+            PhoneNumber:"12345678901"
+        })
+
+        expect(response.body.message).toBe("Cadastro bem-sucedido");
+    })
 })
