@@ -26,10 +26,6 @@ function GeneratePreLoadToken (params={}){
 
 router.use(cors())
 
-router.get("/test",async(req,res)=>{
-	res.status(200).send({message:"hello"});
-})
-
 router.post('/register',emailFilter,async(req,res)=>{
 	try{
 		const Token=GeneratePreLoadToken();
