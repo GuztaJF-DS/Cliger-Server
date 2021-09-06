@@ -1,6 +1,5 @@
 const express=require('express');
 const router=express.Router();
-const bodyParser=require('body-parser');
 const cors=require('cors');
 
 const SalesRecord=require('../models/SalesRecord');
@@ -51,6 +50,7 @@ router.post('/GetAll',async(req,res)=>{
             });
 
             var obj={};
+            
             for(var x=0;x<Data.length;x++){
                 const resp=await ProductSales.findAll({
                     where:{
@@ -66,14 +66,17 @@ router.post('/GetAll',async(req,res)=>{
 
                         return {SalesId,ProductId,Amount,Weight}
                     })
-
-                    obj[Data2[x].SalesId]=Data2;
+                    
+                    for(y=0;y<Data2.length;y++){
+                        obj[Data2[y].SalesId]=Data2;
+                    }
                 }
             }
             let end=Data.concat(obj);
             res.json(end);
         }
     }catch(err){
+        console.log(err);
         res.status(400).send({error:"Couldn't Get the Data"});
     }
 });
