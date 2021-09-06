@@ -1,5 +1,6 @@
 const { Sequelize } = require('sequelize');
 const mysql=require('mysql2/promise');
+require('mysql2/node_modules/iconv-lite').encodingExists('foo');
 require("dotenv-safe").config();
 
 const db = new Sequelize(process.env.DBNAME, process.env.DBUSERNAME, process.env.DBPASSWORD, {

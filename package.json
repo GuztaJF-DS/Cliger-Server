@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "node index.js",
-    "test": "jest --watch"
+    "test": "jest"
   },
   "keywords": [
     "nodejs",
@@ -24,6 +24,7 @@
     "mysql2": "^2.2.5",
     "nodemailer": "^6.6.1",
     "path": "^0.12.7",
+    "rand-token": "^1.0.1",
     "sequelize": "^6.6.2"
   },
   "devDependencies": {

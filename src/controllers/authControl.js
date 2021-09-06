@@ -12,6 +12,7 @@ const Product=require('../models/product');
 const ProductSales=require('../models/ManyToMany_Models/ProductSales');
 const productSchedule=require('../models/ManyToMany_Models/ProductSchedule');
 
+const GenerateConfirmToken=require('../middleware/GenerateToken');
 const transporter=require('../modules/mail');
 const emailFilter=require('../middleware/filter');
 
@@ -22,15 +23,6 @@ function GeneratePreLoadToken (params={}){
 	});
 }
 
-function GenerateConfirmToken(){
-	var randomized = Math.ceil(Math.random() * Math.pow(10,5));
-	var digit = Math.ceil(Math.log(randomized));
-	while(digit > 10){
-		digit = Math.ceil(Math.log(digit));
-	}
-	var id = randomized + digit;
-	return (id).toString();
-}
 
 router.use(cors())
 
@@ -63,6 +55,8 @@ router.post('/register',emailFilter,async(req,res)=>{
 
 router.post('/authenticate',async(req,res)=>{
 	try{
+		const token=GenerateConfirmToken();
+		console.log(token);
 		const result=await User.findOne({where:{
 			Email:req.body.Email
 		}})
