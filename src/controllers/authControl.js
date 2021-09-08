@@ -19,9 +19,10 @@ const emailFilter=require('../middleware/filter');
 
 function GeneratePreLoadToken (params={}){
 	return token=jwt.sign(params, process.env.SECRET,{
-		expiresIn:(24*60*60),
+		expiresIn:(60*60),
 	});
 }
+
 
 
 router.use(cors())
@@ -52,7 +53,6 @@ router.post('/register',emailFilter,async(req,res)=>{
 router.post('/authenticate',async(req,res)=>{
 	try{
 		const token=GenerateConfirmToken();
-		console.log(token);
 		const result=await User.findOne({where:{
 			Email:req.body.Email
 		}})
@@ -93,28 +93,30 @@ router.post('/GetUserbyToken',async(req,res)=>{
 				if(result){
 					result.ConfirmToken=GeneratePreLoadToken();
 					await result.save();
-					return res.json({"error":"Token invalid"});
+				}
+				res.status(400).send({Error:"Not Valid Token"});
+			}
+			if(!err){
+				const result=await User.findOne({where:{
+					ConfirmToken:req.body.ConfirmToken
+				}})
+				if(result){
+					res.json({
+						message:"Sucesso no Login",
+						id:result.id,
+						UserName:result.UserName,
+						Email:result.Email,
+						BirthDate:result.BirthDate,
+						PhoneNumber:result.PhoneNumber
+					});
 				}
 			}
 		});
-		const result=await User.findOne({where:{
-			ConfirmToken:req.body.ConfirmToken
-		}})
-		if(result){
-			res.json({
-				message:"Sucesso no Login",
-				id:result.id,
-				UserName:result.UserName,
-				Email:result.Email,
-				BirthDate:result.BirthDate,
-				PhoneNumber:result.PhoneNumber
-			});
-		}else{
-			res.json({Error:"não encontrado"});
-		}
+		
+	
 	}catch(err){
 		console.log(err)
-		res.status(400).send({Error:"não encontrado"});
+		res.status(400).send({Error:"Not Found"});
 	}
 })
 
@@ -233,8 +235,6 @@ router.post('/ConfirmToken',async(req,res)=>{
 					res.json({Error:"Código Errado"});
 				}
 			})
-		}else{
-			console.log('a');
 		}
 	}
 	catch(err){

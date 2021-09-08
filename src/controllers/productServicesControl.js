@@ -5,6 +5,8 @@ const cors=require('cors');
 const {Op}=require('sequelize');
 
 const ProSer=require('../models/product');
+const ProductSales=require('../models/ManyToMany_Models/ProductSales');
+const ProductSchedule=require('../models/ManyToMany_Models/ProductSchedule');
 
 router.use(cors());
 
@@ -104,25 +106,31 @@ router.put('/Update',async(req,res)=>{
     }
 });
 
-router.delete('/deleteOne',async(req,res)=>{
+router.post('/deleteOne',async(req,res)=>{
     try{
         const result=await ProductSales.destroy({
             where:{
-                ProductId:req.body.id
+                ProductId:req.body.DeleteId
             }
         })
         const response=await ProductSchedule.destroy({
             where:{
-                ProSerId:req.body.id
+                ProSerId:req.body.DeleteId
             }
         })
         const resp=await ProSer.destroy({
             where:{
-                [Op.and]:[{id:req.body.id},{userId:req.body.userId}]
+                [Op.and]:[{id:req.body.DeleteId},{userId:req.body.userId}]
             }
         });
-        res.json({menssage:"Product/Service deleted Succesfully"})
+        if(resp){
+            console.log(JSON.stringify(resp));
+        }
+        console.log(JSON.stringify(req.body));
+
+        res.json({message:"Product/Service deleted Succesfully"})
     }catch(err){
+        console.log(err);
         res.status(400).send({error:"Couldn't Delete"});
     }
 })
