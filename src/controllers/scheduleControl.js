@@ -102,7 +102,7 @@ router.post('/getAllFromDay',async(req,res)=>{
 					let RightID;
 					const Data2=resp.map(function(item,ID){
 						let ScheduleId=item.ScheduleId,
-						ProSerId=item.ProSerId
+						ProSerId=item.ProSerId;
 
 						RightID=ScheduleId;
 
@@ -140,15 +140,15 @@ router.delete('/delete/One',async(req,res)=>{
 				where:{id:find.id}
 			})
 			if(del){
-				res.json({menssage:"Shedule deleted"})
+				res.json({menssage:"Shedule deleted"});
 			}
 			else{
-				res.json({Error:"Schedule not deleted"})
+				res.json({Error:"Schedule not deleted"});
 			}
 		}
 	}catch(err){
-		console.log(err)
-		res.status(400).send({Error:"Couldn't Delete"})
+		console.log(err);
+		res.status(400).send({Error:"Couldn't Delete"});
 	}
 })
 
@@ -220,9 +220,6 @@ router.put('/update',AdjustTime,async(req,res)=>{
 				if(req.body[string]!=""){
 					result[string]=req.body[string];
 					await result.save();
-					console.log("1");
-				}else{
-					console.log("0");
 				}
 			}
 			res.json({menssage:"Values Changed"+Opps});

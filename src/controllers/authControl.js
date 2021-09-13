@@ -94,7 +94,7 @@ router.post('/GetUserbyToken',async(req,res)=>{
 					result.ConfirmToken=GeneratePreLoadToken();
 					await result.save();
 				}
-				res.status(400).send({Error:"Not Valid Token"});
+				res.json({Error:"Not Valid Token"});
 			}
 			if(!err){
 				const result=await User.findOne({where:{

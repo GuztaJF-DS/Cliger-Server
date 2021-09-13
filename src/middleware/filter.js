@@ -1,5 +1,4 @@
 const User=require('../models/user');
-const bodyParser=require('body-parser');
 
 module.exports=async(req,res,next)=>{
 	try{

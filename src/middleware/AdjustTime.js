@@ -1,5 +1,4 @@
 const Schedule=require('../models/Schedule');
-const bodyParser=require('body-parser');
 const { Op } = require("sequelize");
 
 module.exports=async(req,res,next)=>{
@@ -19,7 +18,6 @@ module.exports=async(req,res,next)=>{
 			},{
 				[Op.and]: [{ScheduledDay:Day }, { userId:UserId }]
 			}]
-			
 		},
 		raw: true
 	})
@@ -34,7 +32,6 @@ module.exports=async(req,res,next)=>{
 			id=item.id
 			return {ScheduledHour,ScheduledDay,id};
 		});
-
 
 		var y=Time;
 		const [hour,min]=y.split(":");

@@ -1,8 +1,7 @@
 const express=require('express');
 const router=express.Router();
-const bodyParser=require('body-parser');
 const cors=require('cors');
-const {Op}=require('sequelize');
+const { Op }=require('sequelize');
 
 const ProSer=require('../models/product');
 const ProductSales=require('../models/ManyToMany_Models/ProductSales');
@@ -38,7 +37,7 @@ router.post('/GetAll',async(req,res)=>{
         });
         if(result){
             if(Object.values(result).length==0){
-                res.json({Message:"Not Found"});
+                res.json({message:"Not Found"});
             }else{
                 const data=result.map(function(item,ID){
                     let id=item.id,
@@ -76,7 +75,7 @@ router.post('/GetOne',async(req,res)=>{
     }
 });
 
-router.put('/Update',async(req,res)=>{
+router.post('/Update',async(req,res)=>{
     try{
         const result=await ProSer.findOne({
             where:{
@@ -87,18 +86,17 @@ router.put('/Update',async(req,res)=>{
             const Variables='{"vars":["Code","Name","Description","Type","Value","TotalAmount"]}';
             const obj=JSON.parse(Variables);
 
-            console.log(req.body.Value);
             for(var x=0;x<obj.vars.length;x++){
                 const str=obj.vars[x];
                 if(req.body[str]==""||req.body[str]==null){
-                    console.log("");
+                    null
                 }else{
                     result[str]=req.body[str];
                     await result.save();
                 }
             }
 
-            res.json({menssage:"Values Changed"});
+            res.json({message:"Values Changed"});
         }
     }catch(err){
         console.log(err);
@@ -123,10 +121,6 @@ router.post('/deleteOne',async(req,res)=>{
                 [Op.and]:[{id:req.body.DeleteId},{userId:req.body.userId}]
             }
         });
-        if(resp){
-            console.log(JSON.stringify(resp));
-        }
-        console.log(JSON.stringify(req.body));
 
         res.json({message:"Product/Service deleted Succesfully"})
     }catch(err){
