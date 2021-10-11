@@ -13,7 +13,7 @@ router.post('/register',async(req,res)=>{
             userId:req.body.userId
         })
         if(Result){
-            res.json({menssage:"New Record made"});
+            res.json({message:"Success on Create"});
         }
     }catch(err){
         res.status(400).send({error:"Cannot make a new Record"});

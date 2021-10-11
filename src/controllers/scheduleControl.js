@@ -1,8 +1,7 @@
 const express=require('express');
 const router=express.Router();
-const bodyParser=require('body-parser');
 const cors = require('cors');
-const { Op, json } = require("sequelize");
+const { Op } = require("sequelize");
 
 const Schedule=require('../models/Schedule');
 const ProSchedule=require('../models/ManyToMany_Models/ProductSchedule');
@@ -25,16 +24,16 @@ router.post('/register',AdjustTime,async(req,res)=>{
 					ProSerId:req.body.ProSerId[x]
 				})
 				if(!resp){
-					res.json({error:"Could not Create"});
+					res.json({Error:"Could not Create"});
 				}
 			}
 
-			res.json({menssage:"Success on Create"});
+			res.json({message:"Success on Create"});
 		}
 	}catch(err){
 		console.log(err);
 		res.status(400).send({Error:"Creation Failed"});
-	}
+	} 
 
 })
 
@@ -67,7 +66,7 @@ router.post('/getOne',async(req,res)=>{
 			}
 
 		}else{
-			res.json({menssage:"Cannot Find any register at this time"})
+			res.json({message:"Cannot Find any register at this time"})
 		}
 	}catch(err){
 		res.status(400).send({Error:"Couldn't Get the Data"});
@@ -124,7 +123,7 @@ router.post('/getAllFromDay',async(req,res)=>{
 	}
 })
 
-router.delete('/delete/One',async(req,res)=>{
+router.post('/delete/One',async(req,res)=>{
 	try{
 		const find=await Schedule.findOne({
 			where:{
@@ -140,7 +139,7 @@ router.delete('/delete/One',async(req,res)=>{
 				where:{id:find.id}
 			})
 			if(del){
-				res.json({menssage:"Shedule deleted"});
+				res.json({message:"Shedule deleted"});
 			}
 			else{
 				res.json({Error:"Schedule not deleted"});
@@ -222,7 +221,7 @@ router.put('/update',AdjustTime,async(req,res)=>{
 					await result.save();
 				}
 			}
-			res.json({menssage:"Values Changed"+Opps});
+			res.json({message:"Values Changed"+Opps});
 		}
 	}catch(err){
 		console.log(err);

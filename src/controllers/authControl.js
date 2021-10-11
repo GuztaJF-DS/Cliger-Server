@@ -23,8 +23,6 @@ function GeneratePreLoadToken (params={}){
 	});
 }
 
-
-
 router.use(cors())
 
 router.post('/register',emailFilter,async(req,res)=>{
@@ -113,7 +111,6 @@ router.post('/GetUserbyToken',async(req,res)=>{
 			}
 		});
 		
-	
 	}catch(err){
 		console.log(err)
 		res.status(400).send({Error:"Not Found"});
@@ -191,8 +188,6 @@ router.post('/forgotPass',async(req,res)=>{
 			res.json({Error:"Email Not Exists"});
 			return;
 		}
-		
-			
 
 		const message = {
 			from: '<cligeroficial@gmail.com>',

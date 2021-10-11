@@ -25,7 +25,7 @@ router.post('/newRecord',async(req,res)=>{
                 });
             }
 
-            res.json({menssage:"new record Created"});
+            res.json({message:"Success on Create"});
         }
     }catch(err){
         res.status(400).send({error:"Could not Create"});
@@ -107,9 +107,11 @@ router.post('/GetOne',async(req,res)=>{
                 })
                 var obj=result.dataValues;
                 var end= Object.assign(obj, Data2);
-
                 res.json(end);
             }
+        }
+        else{
+            res.json({error:'Not Found'})
         }
     }catch(err){
         console.log(err);
