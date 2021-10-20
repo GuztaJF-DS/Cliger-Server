@@ -24,7 +24,6 @@ router.post('/newRecord',async(req,res)=>{
                     Weight:req.body.Weight[x],
                 });
             }
-
             res.json({message:"Success on Create"});
         }
     }catch(err){
@@ -72,7 +71,7 @@ router.post('/GetAll',async(req,res)=>{
                     }
                 }
             }
-            let end=Data.concat(obj);
+            let end=(Object.values(obj).length!=0)?Data.concat(obj):[];
             res.json(end);
         }
     }catch(err){

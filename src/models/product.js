@@ -1,4 +1,4 @@
-const {Sequelize}=require('Sequelize');
+const {Sequelize}=require('sequelize');
 const Database=require('../config/database');
 
 const User=require('./user');

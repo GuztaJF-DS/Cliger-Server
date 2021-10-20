@@ -1,4 +1,4 @@
-const Schedule=require('../models/Schedule');
+const Schedule=require('../models/schedule');
 const { Op } = require("sequelize");
 
 module.exports=async(req,res,next)=>{

@@ -21,11 +21,11 @@
     "express": "^4.17.1",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^8.5.1",
-    "mysql2": "^2.2.5",
+    "mysql2": "^2.3.2",
     "nodemailer": "^6.6.1",
     "path": "^0.12.7",
     "rand-token": "^1.0.1",
-    "sequelize": "^6.6.2"
+    "sequelize": "^6.7.0"
   },
   "devDependencies": {
     "jest": "^27.1.0",

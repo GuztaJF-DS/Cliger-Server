@@ -3,7 +3,7 @@ const router=express.Router();
 const cors = require('cors');
 const { Op } = require("sequelize");
 
-const Schedule=require('../models/Schedule');
+const Schedule=require('../models/schedule');
 const ProSchedule=require('../models/ManyToMany_Models/ProductSchedule');
 const AdjustTime=require('../middleware/AdjustTime');
 

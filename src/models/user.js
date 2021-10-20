@@ -19,7 +19,7 @@ const User = Database.define("users", {
         allowNull:false
     },
       PhoneNumber: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BIGINT,
         allowNull:false
     },
       ResetToken: {
