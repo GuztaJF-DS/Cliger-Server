@@ -4,7 +4,7 @@ const User = require("./user");
 
 const FinanceData=Database.define("finances",{
     CurrentBalance:{
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         allowNull:false
     },
     userId:{
