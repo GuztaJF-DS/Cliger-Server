@@ -18,6 +18,7 @@ router.post('/New',async(req,res)=>{
             Type:req.body.Type,
             Value:req.body.Value,
             TotalAmount:req.body.TotalAmount,
+            UnitCost:req.body.UnitCost,
             userId:req.body.userId
         });
         if(result){
@@ -47,9 +48,10 @@ router.post('/GetAll',async(req,res)=>{
                     Type=item.Type,
                     Value=item.Value,
                     TotalAmount=item.TotalAmount,
+                    UnitCost=item.UnitCost,
                     userId=item.userId;
     
-                    return {id,Code,Name,Description,Type,Value,TotalAmount,userId}
+                    return {id,Code,Name,Description,Type,Value,TotalAmount,UnitCost,userId}
                 })
                 res.json(data);
             }
@@ -83,7 +85,7 @@ router.post('/Update',async(req,res)=>{
             }
         });
         if(result){
-            const Variables='{"vars":["Code","Name","Description","Type","Value","TotalAmount"]}';
+            const Variables='{"vars":["Code","Name","Description","Type","Value","TotalAmount","UnitCost"]}';
             const obj=JSON.parse(Variables);
 
             for(var x=0;x<obj.vars.length;x++){

@@ -40,12 +40,15 @@ router.post('/GetAll',async(req,res)=>{
         });
         if(result){
             const Data=result.map(function(item,ID){
+                const Created=item.createdAt;
+                let FormatedDate=(Created.getFullYear())+ "-" + ('0' + (Created.getMonth()+1)).slice(-2) + "-" + ("0"+(Created.getDate())).slice(-2)
                 let TotalBuyPrice=item.TotalBuyPrice,
                 MoneyPayed=item.MoneyPayed,
                 PayBack=item.PayBack,
-                id=item.id
+                id=item.id,
+                createdAt=FormatedDate
 
-                return {id,TotalBuyPrice, MoneyPayed, PayBack}
+                return {id,TotalBuyPrice, MoneyPayed, PayBack,createdAt}
             });
 
             var obj={};
@@ -117,5 +120,6 @@ router.post('/GetOne',async(req,res)=>{
         res.status(400).send({error:"Couldn't Get the Data"});
     }
 })
+
 
 module.exports=app=>app.use("/SalesRecord",router);

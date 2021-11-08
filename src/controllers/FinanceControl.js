@@ -29,12 +29,14 @@ router.post('/getAll',async(req,res)=>{
         })
         if(Result){
             const data=Result.map(function(item,id){
+                const Created=item.createdAt;
+                let FormatedDate=(Created.getFullYear())+ "-" + (Created.getMonth() + 1) + "-" + ((Created.getDate()))
                 let Id=item.id,
                 CurrentBalance=item.CurrentBalance,
-                Date=item.createdAt,
+                createdAt=FormatedDate,
                 userId=item.userId;
 
-                return {Id,CurrentBalance,Date,userId}
+                return {Id,CurrentBalance,createdAt,userId}
             })
             res.json(data);
 

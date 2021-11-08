@@ -6,7 +6,7 @@ const db = new Sequelize(process.env.DBNAME, process.env.DBUSERNAME, process.env
   host: 'localhost',
   port:process.env.DBPORT,
   dialect: 'mysql',
-  timezone: '-03:00',
+  timezone: '-03:00'
 });
 
 run();
@@ -21,10 +21,10 @@ async function run(){
   await connection.query(`CREATE DATABASE IF NOT EXISTS \`${process.env.DBNAME}\`;`);
 
   // If you have changed the DataBase and want to Update it, use the code below
-  const resultado=await db.sync({ alter: true });
+  //const resultado=await db.sync({ alter: true });
 
   // But If you don't have changed, use this instead, cuz he is faster than the other :)
-  // const resultado=await db.sync();
+  const resultado=await db.sync();
 }
 
 

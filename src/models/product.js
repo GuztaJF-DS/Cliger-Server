@@ -28,6 +28,10 @@ const ProductService=Database.define('productService',{
         type:Sequelize.INTEGER,
         allowNull:true
     },
+    UnitCost:{
+        type:Sequelize.FLOAT,
+        allowNull:true
+    },
     userId:{
         type:Sequelize.INTEGER,
         allowNull:false,
