@@ -83,33 +83,31 @@ router.post('/GetAll',async(req,res)=>{
     }
 });
 
-router.post('/GetOne',async(req,res)=>{
+router.post('/GetOneProduct',async(req,res)=>{
     try{
-        const result=await SalesRecord.findOne({
+        const result=await SalesRecord.findAll({
             where:{
-                userId:req.body.userId,
-                id:req.body.id
+                userId:req.body.userId
             }
         });
         if(result){
-            const resp=await ProductSales.findAll({
+             const resp=await ProductSales.findAll({
                 where:{
-                    SalesId:result.id
+                    ProductId:req.body.ProductId
                 }
             });
             if(resp){
-                const Data2=resp.map(function(item,ID){
+                const Data=resp.map(function(item,ID){
+                    let FormatedDate=(item.createdAt.getFullYear())+ "/" + (item.createdAt.getMonth() + 1) + "/" + ((item.createdAt.getDate()))
                     let SalesId=item.SalesId,
                     ProductId=item.ProductId,
                     Amount=item.Amount,
-                    Weight=item.Weight;
+                    Weight=item.Weight,
+                    createdAt=FormatedDate;
 
-
-                    return {SalesId,ProductId,Amount,Weight}
+                    return {SalesId,ProductId,Amount,Weight,createdAt}
                 })
-                var obj=result.dataValues;
-                var end= Object.assign(obj, Data2);
-                res.json(end);
+                res.json(Data);
             }
         }
         else{
