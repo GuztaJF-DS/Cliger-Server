@@ -19,7 +19,7 @@ const emailFilter=require('../middleware/filter');
 
 function GeneratePreLoadToken (params={}){
 	return token=jwt.sign(params, process.env.SECRET,{
-		expiresIn:(60*60),
+		expiresIn:(60*60*24),
 	});
 }
 

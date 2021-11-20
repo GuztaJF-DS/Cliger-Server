@@ -10,7 +10,7 @@ router.use(cors());
 router.post('/newRecord',async(req,res)=>{
     try{
         const result=await SalesRecord.create({
-            TotalBuyPrice:req.body.TotalBuyPrice,
+            TotalCost:req.body.TotalCost,
             MoneyPayed:req.body.MoneyPayed,
             PayBack:req.body.PayBack,
             userId:req.body.userId
@@ -42,13 +42,13 @@ router.post('/GetAll',async(req,res)=>{
             const Data=result.map(function(item,ID){
                 const Created=item.createdAt;
                 let FormatedDate=(Created.getFullYear())+ "-" + ('0' + (Created.getMonth()+1)).slice(-2) + "-" + ("0"+(Created.getDate())).slice(-2)
-                let TotalBuyPrice=item.TotalBuyPrice,
+                let TotalCost=item.TotalCost,
                 MoneyPayed=item.MoneyPayed,
                 PayBack=item.PayBack,
                 id=item.id,
                 createdAt=FormatedDate
 
-                return {id,TotalBuyPrice, MoneyPayed, PayBack,createdAt}
+                return {id,TotalCost, MoneyPayed, PayBack,createdAt}
             });
 
             var obj={};

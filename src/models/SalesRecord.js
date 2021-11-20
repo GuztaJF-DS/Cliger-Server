@@ -4,7 +4,7 @@ const database=require('../config/database');
 const User=require('./user');
 
 const SalesRecord=database.define('SalesRecord',{
-    TotalBuyPrice:{
+    TotalCost:{
         type:Sequelize.FLOAT,
         allowNull:true
     },
