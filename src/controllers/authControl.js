@@ -193,7 +193,17 @@ router.post('/forgotPass',async(req,res)=>{
 			from: '<cligeroficial@gmail.com>',
 			to: `<${req.body.Email}>`,
 			subject: 'Recuperação de senha',
-			html: `<p>Olá, pelo visto você gostaria de mudar a sua senha, use esse código aqui para redefinir sua senha ${Token}</p>`
+			html: `
+			<body style="background-color:#68293f;">
+				<img src="https://i.ibb.co/SBSS0JF/Cliger-Logo-Text-Only.png" alt="Cliger-Logo"/>
+				<h2 style="color:#ebb89b">
+					Olá, pelo visto você gostaria de mudar a sua senha, use esse código aqui para redefinir sua senha
+				</h2>
+					<h1 style="color:#ebb89b">${Token}</h1>
+				<h2 style="color:#ebb89b">
+					Caso você não queira mudar a senha apenas ignore este e-mail
+				</h2>
+			<body>`
 		};
 			console.log("\nEnviando o Email");
 			transporter.sendMail(message, (err, info) => {
