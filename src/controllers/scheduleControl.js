@@ -31,7 +31,7 @@ router.post('/register',AdjustTime,async(req,res)=>{
 			res.json({message:"Success on Create"});
 		}
 	}catch(err){
-		console.log(err);
+		console.error(err);
 		res.status(400).send({Error:"Creation Failed"});
 	} 
 
@@ -118,7 +118,7 @@ router.post('/getAllFromDay',async(req,res)=>{
 			res.json(end);
 		}
 	}catch(err){
-		console.log(err);
+		console.error(err);
 		res.status(400).send({Error:"Couldn't Get the Data"});
 	}
 })
@@ -146,7 +146,7 @@ router.post('/delete/One',async(req,res)=>{
 			}
 		}
 	}catch(err){
-		console.log(err);
+		console.error(err);
 		res.status(400).send({Error:"Couldn't Delete"});
 	}
 })
@@ -224,7 +224,7 @@ router.put('/update',AdjustTime,async(req,res)=>{
 			res.json({message:"Values Changed"+Opps});
 		}
 	}catch(err){
-		console.log(err);
+		console.error(err);
 		res.status(400).send({Error:"Couldn't Update the Schedule"});
 	}
 })

@@ -76,12 +76,12 @@ router.post('/authenticate',async(req,res)=>{
 			res.json({Error:"E-Mail Errado"});
 		}
 	}catch(err){
-		console.log(err);
+		console.error(err);
 		res.status(400).send({Error:"Autenticação falha"});
 	}
 });
 
-router.post('/GetUserbyToken',async(req,res)=>{
+router.post('/GetUserByToken',async(req,res)=>{
 	try{
 		jwt.verify(req.body.ConfirmToken,process.env.SECRET,async(err,decoded)=>{
 			if(err){
@@ -112,7 +112,7 @@ router.post('/GetUserbyToken',async(req,res)=>{
 		});
 		
 	}catch(err){
-		console.log(err)
+		console.error(err)
 		res.status(400).send({Error:"Not Found"});
 	}
 })
@@ -209,14 +209,14 @@ router.post('/forgotPass',async(req,res)=>{
 			transporter.sendMail(message, (err, info) => {
 	        if (err) {
 	            console.log(`Error occurred. ${err.message}`);
-	            res.json({Error:"Email not sended"});
+	            res.json({Error:"Email not sent"});
 	        }else{
 		        console.log(`Message sent:, ${info.messageId}`);
-	        	res.json({message:"Email sended"})
+	        	res.json({message:"Email sent"})
 	        }
 	    });
 	}catch(err){
-		console.log(err);
+		console.error(err);
 		res.status(400).send({Error:"Email não Enviado"})
 	}
 })
@@ -233,7 +233,7 @@ router.post('/ConfirmToken',async(req,res)=>{
 					res.json({message:"Código confirmado"});
 				}
 				else if(err){
-					console.log(err);
+					console.error(err);
 					res.json({Error:"Código Invalido"});
 				}
 				else{
@@ -243,7 +243,7 @@ router.post('/ConfirmToken',async(req,res)=>{
 		}
 	}
 	catch(err){
-		console.log(err);
+		console.error(err);
 		res.status(400).send({Error:"Cannot confirm Token, try again Later"});
 	}
 })
@@ -268,7 +268,7 @@ router.post('/ChangePass',async(req,res)=>{
 			res.json({Error:"Email or Token is Invalid"})
 		}
 	}catch(err){
-		console.log(err);
+		console.error(err);
 		res.json({Error:"Cannot change Password"});
 	}
 })

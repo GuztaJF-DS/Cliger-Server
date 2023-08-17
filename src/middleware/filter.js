@@ -11,7 +11,7 @@ module.exports=async(req,res,next)=>{
 			return next();
 		}
 	}catch(err){
-		console.log(err);
+		console.error(err);
 		res.json({Error:"Um Error ocoreu na verificação do Email"});
 	}
 }

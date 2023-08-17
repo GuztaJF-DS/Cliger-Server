@@ -41,12 +41,12 @@ router.post('/GetAll',async(req,res)=>{
         if(result){
             const Data=result.map(function(item,ID){
                 const Created=item.createdAt;
-                let FormatedDate=(Created.getFullYear())+ "-" + ('0' + (Created.getMonth()+1)).slice(-2) + "-" + ("0"+(Created.getDate())).slice(-2)
+                let FormattedDate=(Created.getFullYear())+ "-" + ('0' + (Created.getMonth()+1)).slice(-2) + "-" + ("0"+(Created.getDate())).slice(-2)
                 let TotalCost=item.TotalCost,
                 MoneyPayed=item.MoneyPayed,
                 PayBack=item.PayBack,
                 id=item.id,
-                createdAt=FormatedDate
+                createdAt=FormattedDate
 
                 return {id,TotalCost, MoneyPayed, PayBack,createdAt}
             });
@@ -78,7 +78,7 @@ router.post('/GetAll',async(req,res)=>{
             res.json(end);
         }
     }catch(err){
-        console.log(err);
+        console.error(err);
         res.status(400).send({error:"Couldn't Get the Data"});
     }
 });
@@ -98,12 +98,12 @@ router.post('/GetOneProduct',async(req,res)=>{
             });
             if(resp){
                 const Data=resp.map(function(item,ID){
-                    let FormatedDate=(item.createdAt.getFullYear())+ "/" + (item.createdAt.getMonth() + 1) + "/" + ((item.createdAt.getDate()))
+                    let FormattedDate=(item.createdAt.getFullYear())+ "/" + (item.createdAt.getMonth() + 1) + "/" + ((item.createdAt.getDate()))
                     let SalesId=item.SalesId,
                     ProductId=item.ProductId,
                     Amount=item.Amount,
                     Weight=item.Weight,
-                    createdAt=FormatedDate;
+                    createdAt=FormattedDate;
 
                     return {SalesId,ProductId,Amount,Weight,createdAt}
                 })
@@ -114,7 +114,7 @@ router.post('/GetOneProduct',async(req,res)=>{
             res.json({error:'Not Found'})
         }
     }catch(err){
-        console.log(err);
+        console.error(err);
         res.status(400).send({error:"Couldn't Get the Data"});
     }
 })

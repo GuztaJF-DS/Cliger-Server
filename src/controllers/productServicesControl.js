@@ -57,7 +57,7 @@ router.post('/GetAll',async(req,res)=>{
             }
         }
     }catch(err){
-      console.log(err);
+      console.error(err);
         res.status(400).json({error:err});
     }
 });
@@ -101,7 +101,7 @@ router.post('/Update',async(req,res)=>{
             res.json({message:"Values Changed"});
         }
     }catch(err){
-        console.log(err);
+        console.error(err);
         res.status(400).send({error:"Couldn't Update the Product/Service"});
     }
 });
@@ -126,7 +126,7 @@ router.post('/deleteOne',async(req,res)=>{
 
         res.json({message:"Product/Service deleted Succesfully"})
     }catch(err){
-        console.log(err);
+        console.error(err);
         res.status(400).send({error:"Couldn't Delete"});
     }
 })
