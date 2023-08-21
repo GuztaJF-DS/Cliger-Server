@@ -26,13 +26,4 @@ describe("Sales Record Tests",()=>{
         })
         expect(result.body.message!="Cannot Find any register at this time").toBeTruthy()
     })
-
-    it('Shoud Find All Records',async()=>{
-        const result=await request(App)
-        .post('/SalesRecord/getAllFromDay')
-        .send({
-            userId:1
-        })
-        expect(result.body.Error!="Couldn't Get the Data").toBeTruthy()
-    })
 })

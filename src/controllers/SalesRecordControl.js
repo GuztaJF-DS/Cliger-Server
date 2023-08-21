@@ -39,7 +39,7 @@ router.post('/GetAll',async(req,res)=>{
             }
         });
         if(result){
-            const Data=result.map(function(item,ID){
+            const Data=result.map(function(item){
                 const Created=item.createdAt;
                 let FormattedDate=(Created.getFullYear())+ "-" + ('0' + (Created.getMonth()+1)).slice(-2) + "-" + ("0"+(Created.getDate())).slice(-2)
                 let TotalCost=item.TotalCost,
@@ -51,31 +51,22 @@ router.post('/GetAll',async(req,res)=>{
                 return {id,TotalCost, MoneyPayed, PayBack,createdAt}
             });
 
-            var obj={};
-            
-            for(var x=0;x<Data.length;x++){
-                const resp=await ProductSales.findAll({
+            const FinalData = await Promise.all(Data.map(async (currentData)=>{
+                const productSales=await ProductSales.findAll({
                     where:{
-                        SalesId:Data[x].id
+                        SalesId:currentData.id
                     }
                 });
-                if(resp){
-                    const Data2=resp.map(function(item,ID){
-                        let SalesId=item.SalesId,
-                        ProductId=item.ProductId,
-                        Amount=item.Amount,
-                        Weight=item.Weight;
-
-                        return {SalesId,ProductId,Amount,Weight}
-                    })
-                    
-                    for(y=0;y<Data2.length;y++){
-                        obj[Data2[y].SalesId]=Data2;
-                    }
+                if(productSales){
+                    const proAmount=productSales.reduce((acc,current)=>{
+                        return acc + current.Amount
+                    },0)
+                    return {...currentData, Amount:proAmount}
                 }
-            }
-            let end=(Object.values(obj).length!=0)?Data.concat(obj):[];
-            res.json(end);
+                return {...currentData}
+            }))
+
+            res.json(FinalData);
         }
     }catch(err){
         console.error(err);
