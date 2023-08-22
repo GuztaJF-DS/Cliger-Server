@@ -1,34 +1,41 @@
 {
-  "name": "cligerserver",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "test": "jest"
-  },
-  "keywords": [
-    "nodejs",
-    "MySql"
-  ],
-  "author": "jota efe",
-  "license": "GNU",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "connect": "^3.7.0",
-    "cors": "^2.8.5",
-    "dotenv-safe": "^8.2.0",
-    "express": "^4.17.1",
-    "fs": "^0.0.1-security",
-    "jsonwebtoken": "^8.5.1",
-    "mysql2": "^2.3.2",
-    "nodemailer": "^6.6.1",
-    "path": "^0.12.7",
-    "rand-token": "^1.0.1",
-    "sequelize": "^6.7.0"
-  },
-  "devDependencies": {
-    "jest": "^27.1.0",
-    "supertest": "^6.1.6"
-  }
+    "name": "cligerserver",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "prettier:check": "prettier --check .",
+        "prettier:write": "prettier --write .",
+        "lint:check": "eslint .",
+        "lint:fix": "eslint --fix .",
+        "test": "jest"
+    },
+    "keywords": [
+        "nodejs",
+        "MySql"
+    ],
+    "author": "jota efe",
+    "license": "GNU",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.0",
+        "connect": "^3.7.0",
+        "cors": "^2.8.5",
+        "dotenv-safe": "^8.2.0",
+        "eslint-config-prettier": "^9.0.0",
+        "express": "^4.17.1",
+        "fs": "^0.0.1-security",
+        "jsonwebtoken": "^8.5.1",
+        "mysql2": "^2.3.2",
+        "nodemailer": "^6.6.1",
+        "path": "^0.12.7",
+        "prettier": "^3.0.2",
+        "rand-token": "^1.0.1",
+        "sequelize": "^6.7.0"
+    },
+    "devDependencies": {
+        "eslint": "^8.47.0",
+        "jest": "^27.1.0",
+        "supertest": "^6.1.6"
+    }
 }

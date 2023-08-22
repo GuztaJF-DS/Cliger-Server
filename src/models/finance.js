@@ -1,23 +1,22 @@
-const { Sequelize } = require("sequelize");
-const Database = require("../config/database");
-const User = require("./user");
+const { Sequelize } = require('sequelize');
+const Database = require('../config/database');
+const User = require('./user');
 
-const FinanceData=Database.define("finances",{
-    CurrentBalance:{
+const FinanceData = Database.define('finances', {
+    CurrentBalance: {
         type: Sequelize.FLOAT,
-        allowNull:false
+        allowNull: false,
     },
-    userId:{
-        type:Sequelize.INTEGER,
-        allowNull:false,
-        onDelete:'cascade',
-        hooks:'true',
-        references:{
-            model:User,
-            key:'id'
-        }
-    }
+    userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        onDelete: 'cascade',
+        hooks: 'true',
+        references: {
+            model: User,
+            key: 'id',
+        },
+    },
 });
 
-
-module.exports=FinanceData;
+module.exports = FinanceData;
