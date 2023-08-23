@@ -2,7 +2,7 @@
 <h2 align="center">📉 Welcome to the Client Manager 📈</h2>
 <h3 align="center"><img src="https://img.shields.io/github/issues/GuztaJF-DS/Cliger-Server"/> <img src="https://img.shields.io/github/stars/GuztaJF-DS/Cliger-Server"/> <img src="https://img.shields.io/github/license/GuztaJF-DS/Cliger-Server"/>  <img src="https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FIGotaMellowship"/></h3>
 
-# Summary 📋
+# Summary
 
 <!--ts-->
 
@@ -10,18 +10,17 @@
 -   [Technologies](#technologies)
 -   [Setup](#setup)
     -   [Requirements](#requirements)
-    -   [Intalling and configuring](#intalling-and-configuring)
--   [To Do](#to-do)
+    -   [Installing and configuring](#installing-and-configuring)
 -   [License](#license)
 <!--te-->
 
-# About 👀
+# About
 
-The Cliger is a management application for micro, small and medium companies, the idea behind the Cliger would be to help these entrepreneurs to plan better since in Brazil most companies close in less than a year because of stupid decisions and a really bad administration.<br>
-but how will the cliger help me, you ask me, well we will expose numbers, data, graphs, predictions among other things that most of these small entrepreneurs don't even know about the existence<br>
+The Cliger is a management application for micro, small, and medium companies, the idea behind the Cliger would be to help these entrepreneurs to plan better since in Brazil most companies close in less than a year because of stupid decisions and a really bad administration.<br>
+But how will the cliger help me, you ask me, well we will expose numbers, data, graphs, predictions among other things that most of these small entrepreneurs don't even know about the existence<br>
 Lastly, it is necessary to say that this is only the first part of the project, the server, after that first step we will work on the Mobile version and then if time helps with a little thing for the desktop
 
-# Technologies 🚀
+# Technologies
 
 -   [Node.js](https://nodejs.org/en/)
 -   [MySql](https://www.mysql.com/)
@@ -32,15 +31,15 @@ Lastly, it is necessary to say that this is only the first part of the project, 
 -   [Body-parser](https://github.com/expressjs/body-parser)
 -   [Dotenv-safe](https://github.com/rolodato/dotenv-safe)
 
-# Setup 💻
+# Setup
 
 ### Requirements
 
 -   [Node.js](https://nodejs.org/en/)
 -   [Yarn](https://classic.yarnpkg.com/) or [NPM](https://www.npmjs.com/)
--   You also need to set a [MySql server](https://www.mysql.com/)
+-   You also need to set up a [MySql server](https://www.mysql.com/)
 
-### Intalling and configuring
+### Installing and configuring
 
 _Clone the project and access the folder_
 
@@ -63,13 +62,13 @@ $ cp .env.example .env
 
 # Start the MySql server
 
-# And then you run the api service in a development environment
+# And then you run the API service in a development environment
 $ npm run start
 # or
 $ yarn start
 
-# Well done, server side has started!
+# Well done, server-side has started!
 ```
-# License 🎓
+# License
 
 This project is licensed under the GPL 3.0 License - see the [LICENSE](LICENSE) file for details.
