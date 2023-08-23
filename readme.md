@@ -23,7 +23,7 @@ Lastly, it is necessary to say that this is only the first part of the project, 
 
 # Technologies 🚀
 
--   [Node.js ](https://nodejs.org/en/)
+-   [Node.js](https://nodejs.org/en/)
 -   [MySql](https://www.mysql.com/)
 -   [Sequelize](https://sequelize.org/)
 -   [Express](https://expressjs.com/pt-br/)
@@ -38,9 +38,7 @@ Lastly, it is necessary to say that this is only the first part of the project, 
 
 -   [Node.js](https://nodejs.org/en/)
 -   [Yarn](https://classic.yarnpkg.com/) or [NPM](https://www.npmjs.com/)
--   [MySql](https://www.mysql.com/)
-    <br>Run Some Type of MySql server for the Database, particularly i use the
--   [Xampp](https://www.apachefriends.org/pt_br/index.html)
+-   You also need to set a [MySql server](https://www.mysql.com/)
 
 ### Intalling and configuring
 
@@ -66,24 +64,12 @@ $ cp .env.example .env
 # Start the MySql server
 
 # And then you run the api service in a development environment
-$ npm run build
+$ npm run start
+# or
+$ yarn start
 
-# Well done, project is started!
+# Well done, server side has started!
 ```
-
-# To Do 📝
-
--   [x] Create the basic DB Structure
--   [x] Create a basic Register Structure
--   [x] Plan the MER
--   [x] Apply the MER
--   [x] Create the Login With token Auth
--   [x] Create the Forgot-Password
--   [x] Create the Change Password
--   [x] Create the Delete User
--   [x] fix some parts of the code
--   [ ] Think what else i will add to this list
-
 # License 🎓
 
 This project is licensed under the GPL 3.0 License - see the [LICENSE](LICENSE) file for details.
