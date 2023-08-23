@@ -8,6 +8,7 @@
         "prettier:write": "prettier --write .",
         "lint:check": "eslint .",
         "lint:fix": "eslint --fix .",
+		"cspell": "cspell lint \"src/**/*.js\"",
         "test": "jest"
     },
     "keywords": [
@@ -34,6 +35,7 @@
         "sequelize": "^6.7.0"
     },
     "devDependencies": {
+        "cspell": "^7.0.1",
         "eslint": "^8.47.0",
         "jest": "^27.1.0",
         "supertest": "^6.1.6"

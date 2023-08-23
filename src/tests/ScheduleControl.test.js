@@ -22,7 +22,7 @@ describe("Schedule's Tests", () => {
             .send({
                 ScheduledDay: ScheduledDay,
                 ScheduledHour: ScheduledHour,
-                ClientName: 'jobson',
+                ClientName: 'John',
                 userId: 1,
                 ProSerId: [1, 2],
             });
@@ -41,7 +41,7 @@ describe("Schedule's Tests", () => {
         ).toBeTruthy();
     });
 
-    it('Shoud Find All Records of the Day', async () => {
+    it('Should Find All Records of the Day', async () => {
         const result = await request(App).post('/schedule/getAllFromDay').send({
             ScheduledDay: ScheduledDay,
             userId: 1,
@@ -55,6 +55,6 @@ describe("Schedule's Tests", () => {
             ScheduledHour: ScheduledHour,
             userId: 1,
         });
-        expect(result.body.message).toBe('Shedule deleted');
+        expect(result.body.message).toBe('Schedule deleted');
     });
 });

@@ -10,7 +10,7 @@ describe("Finance's Tests", () => {
         expect(result.body.message).toBe('Success on Create');
     });
 
-    it('Shoud Find All Records', async () => {
+    it('Should Find All Records', async () => {
         const result = await request(App).post('/finance/getAll').send({
             userId: 1,
         });

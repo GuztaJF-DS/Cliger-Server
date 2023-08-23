@@ -10,7 +10,7 @@ describe("Auth's Tests", () => {
         expect(Token).not.toBe(0);
     });
 
-    it('Testing how many repited tokens the system found', async () => {
+    it('Testing how many repeated tokens the system found', async () => {
         var y = [];
         var count = 0;
         for (var x = 0; x <= 100; x++) {

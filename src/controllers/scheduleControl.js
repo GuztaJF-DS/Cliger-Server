@@ -154,7 +154,7 @@ router.post('/delete/One', async (req, res) => {
                 where: { id: find.id },
             });
             if (del) {
-                res.json({ message: 'Shedule deleted' });
+                res.json({ message: 'Schedule deleted' });
             } else {
                 res.json({ Error: 'Schedule not deleted' });
             }
@@ -195,9 +195,9 @@ router.delete('/delete/EntireDay', async (req, res) => {
                 },
             });
             if (del) {
-                res.json({ menssage: 'Records Deleted Successfully' });
+                res.json({ message: 'Records Deleted Successfully' });
             } else {
-                res.json({ menssage: 'Records not Deleted' });
+                res.json({ message: 'Records not Deleted' });
             }
         }
     } catch (err) {

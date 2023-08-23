@@ -22,7 +22,7 @@ router.post('/New', async (req, res) => {
             userId: req.body.userId,
         });
         if (result) {
-            res.json({ menssage: 'New Product Recoded' });
+            res.json({ message: 'New Product Recoded' });
         }
     } catch (err) {
         res.status(400).send({
